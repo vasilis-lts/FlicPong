@@ -1,3 +1,3 @@
 # Ping Pong
 
-### Helper app for Ping Pong games!
+Helper app for table tennis games!
