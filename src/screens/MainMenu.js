@@ -12,7 +12,7 @@ function MainMenu() {
       <h1 className="mt2 main-title">Ping Pong!</h1>
       <h1>Start new game:</h1>
       <div className="main-menu-contents">
-        <Link href="/2v2">
+        <Link href="/2v2" direction="forward">
           <button className="main-menu-btn">2 vs 2</button>
         </Link>
       </div>

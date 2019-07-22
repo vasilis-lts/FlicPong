@@ -4,9 +4,10 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 
 import { mount, redirect, route } from "navi";
-import { Router, View } from "react-navi";
+import { Router } from "react-navi";
 
 import Layout from "./Layout";
+import App from "./App";
 
 const routes = mount({
   "/main-menu": route({
@@ -25,7 +26,7 @@ ReactDOM.render(
   <Router routes={routes}>
     <Layout>
       <Suspense fallback={null}>
-        <View />
+        <App />
       </Suspense>
     </Layout>
   </Router>,

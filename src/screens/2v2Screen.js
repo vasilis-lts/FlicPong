@@ -33,7 +33,7 @@ function TeamRandomizer(props) {
 
       setTeam1(team1);
       setTeam2(team2);
-    }, 1000);
+    }, 3000);
   }
 
   return (
@@ -43,10 +43,10 @@ function TeamRandomizer(props) {
       </Link>
       <div className="flex">
         <div className="team-title red">
-          <h1>Team Red</h1>
+          <h1>Red Team</h1>
         </div>
         <div className="team-title blue">
-          <h1>Team Blue</h1>
+          <h1>Blue Team</h1>
         </div>
       </div>
       <div className="teams-container">
