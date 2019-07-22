@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import thefuckingplantImage from "../assets/images/the_fucking_plant.png";
 import "../App.scss";
 import Modal from "../components/Modal";
+import { Link } from "react-navi";
 
 function TeamRandomizer(props) {
   const [team1, setTeam1] = useState([]);
@@ -32,15 +33,14 @@ function TeamRandomizer(props) {
 
       setTeam1(team1);
       setTeam2(team2);
-    }, 500);
+    }, 1000);
   }
 
   return (
     <div className="TeamRandomizer screen">
-      <p
-        className="nav-link main-menu-link"
-        onClick={() => props.goToMainMenu()}
-      >{`<- Back to main menu`}</p>
+      <Link href="/main" className="nav-link main-menu-link mt1">
+        {`<- Back to main menu`}
+      </Link>
       <div className="flex">
         <div className="team-title red">
           <h1>Team Red</h1>

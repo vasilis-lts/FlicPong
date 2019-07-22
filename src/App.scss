@@ -68,6 +68,7 @@ button {
   cursor: pointer;
   color: $black;
   font-size: 1.2rem;
+  display: block;
 }
 .nav-link:hover {
   color: lighten($black, 15%);
@@ -103,7 +104,10 @@ button {
   overflow: hidden;
 }
 
+////////////////////////////
 ///////// SCREENS //////////
+////////////////////////////
+
 .MainMenu {
   .main-title {
     font-size: 8rem;
