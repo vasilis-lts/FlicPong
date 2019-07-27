@@ -3,6 +3,7 @@ import thefuckingplantImage from "../assets/images/the_fucking_plant.png";
 import "../App.scss";
 import Modal from "../components/Modal";
 import { Link } from "react-navi";
+import Audio from "../audio/AudioController";
 
 function TeamRandomizer(props) {
   const [team1, setTeam1] = useState([]);
@@ -41,12 +42,12 @@ function TeamRandomizer(props) {
       <Link href="/main" className="nav-link main-menu-link mt1">
         {`<- Back to main menu`}
       </Link>
-      <div className="flex">
+      <div className="flex mt2">
         <div className="team-title red">
-          <h1>Red Team</h1>
+          <h1>Team !Plant</h1>
         </div>
-        <div className="team-title blue">
-          <h1>Blue Team</h1>
+        <div className="team-title green">
+          <h1>Team Plant</h1>
         </div>
       </div>
       <div className="teams-container">
@@ -82,7 +83,11 @@ function TeamRandomizer(props) {
       {team1.length && team2.length ? (
         <button
           className="mt2 btn btn-primary font-large"
-          onClick={() => randomizeTeams()}
+          onMouseEnter={() => Audio.menuMove()}
+          onClick={() => {
+            Audio.menuSelect();
+            randomizeTeams();
+          }}
         >
           Re-Randomize!
         </button>
