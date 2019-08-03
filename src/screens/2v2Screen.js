@@ -43,7 +43,7 @@ function TeamRandomizer(props) {
       <Link href="/main" className="nav-link main-menu-link mt1">
         {`<- Back to main menu`}
       </Link>
-      <div className="flex mt1">
+      <div className="flex">
         <div className="team-title red">
           <h1>Team !Plant</h1>
         </div>
