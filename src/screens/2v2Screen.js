@@ -4,6 +4,7 @@ import "../App.scss";
 import Modal from "../components/Modal";
 import { Link } from "react-navi";
 import Audio from "../audio/AudioController";
+import { getPlayers } from "../helperFunctions";
 
 function TeamRandomizer(props) {
   const [team1, setTeam1] = useState([]);
@@ -14,7 +15,7 @@ function TeamRandomizer(props) {
   }, []);
 
   function randomizeTeams() {
-    const players = ["Bill", "Dennis", "Stevy", "Thomas"];
+    const players = getPlayers();
     const numberOfPlayers = players.length;
     const team1 = [];
     const team2 = [];
@@ -42,7 +43,7 @@ function TeamRandomizer(props) {
       <Link href="/main" className="nav-link main-menu-link mt1">
         {`<- Back to main menu`}
       </Link>
-      <div className="flex mt2">
+      <div className="flex mt1">
         <div className="team-title red">
           <h1>Team !Plant</h1>
         </div>
