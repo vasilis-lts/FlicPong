@@ -10,7 +10,7 @@ function MainMenu() {
 
   return (
     <div className="MainMenu screen">
-      <h1 className="mt5 main-title">Ping Pong!</h1>
+      <h1 className="mt3 main-title">Ping Pong!</h1>
       <h1>Start a new game:</h1>
       <div className="main-menu-contents">
         <Link href="/2v2" direction="forward">
