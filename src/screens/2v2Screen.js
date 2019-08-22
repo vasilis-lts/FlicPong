@@ -83,7 +83,7 @@ function TeamRandomizer(props) {
       </div>
       {team1.length && team2.length ? (
         <button
-          className="mt2 btn btn-primary font-large"
+          className="mt1 btn btn-primary font-large"
           onMouseEnter={() => Audio.menuMove()}
           onClick={() => {
             Audio.menuSelect();
