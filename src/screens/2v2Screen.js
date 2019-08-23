@@ -5,17 +5,19 @@ import Modal from "../components/Modal";
 import { Link } from "react-navi";
 import Audio from "../audio/AudioController";
 import Api from "../helperFunctions";
+import appSettings from "../appSettings";
 
 function TeamRandomizer(props) {
   const [team1, setTeam1] = useState([]);
   const [team2, setTeam2] = useState([]);
+  const [MatchStarted, setMatchStarted] = useState(false);
 
   useEffect(() => {
     randomizeTeams();
   }, []);
 
   async function randomizeTeams() {
-    const players = await Api.get("http://localhost:3001/Api/GetPlayers");
+    const players = await Api.get(appSettings.endpoints.GetPlayers);
 
     const numberOfPlayers = players.length;
     const team1 = [];
@@ -38,6 +40,35 @@ function TeamRandomizer(props) {
       setTeam2(team2);
     }, 3000);
   }
+
+  const AcceptTeams = () => {
+    setMatchStarted(true);
+    const postBody = prep2v2MatchBody();
+
+    fetch(appSettings.endpoints.Save2v2Match, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(postBody)
+    })
+      .then(response => response.json())
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const prep2v2MatchBody = () => {
+    return {
+      Player1Team1Id: team1[0].Id,
+      Player2Team1Id: team1[1].Id,
+      Player1Team2Id: team2[0].Id,
+      Player2Team2Id: team2[1].Id
+    };
+  };
 
   return (
     <div className="TeamRandomizer screen">
@@ -82,17 +113,29 @@ function TeamRandomizer(props) {
           </div>
         </div>
       </div>
-      {team1.length && team2.length ? (
-        <button
-          className="mt1 btn btn-primary font-large"
-          onMouseEnter={() => Audio.menuMove()}
-          onClick={() => {
-            Audio.menuSelect();
-            randomizeTeams();
-          }}
-        >
-          Re-Randomize!
-        </button>
+      {team1.length && team2.length && !MatchStarted ? (
+        <div className="flex-center-xy">
+          <button
+            className="mt1 btn btn-primary font-large"
+            onMouseEnter={() => Audio.menuMove()}
+            onClick={() => {
+              Audio.menuSelect();
+              AcceptTeams();
+            }}
+          >
+            Begin Match
+          </button>
+          <button
+            className="mt1 btn btn-link font-large"
+            onMouseEnter={() => Audio.menuMove()}
+            onClick={() => {
+              Audio.menuSelect();
+              randomizeTeams();
+            }}
+          >
+            New Teams
+          </button>
+        </div>
       ) : null}
 
       <img

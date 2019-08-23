@@ -2,7 +2,7 @@
 
 Helper fun app for table tennis games!
 
-## Get Started
+## Get it started
 
 ```
 git clone https://github.com/vasilis-lts/PingPong.git

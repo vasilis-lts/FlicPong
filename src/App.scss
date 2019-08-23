@@ -19,6 +19,9 @@ body {
   width: 100%;
   font-size: 24px;
 }
+a {
+  text-decoration: none;
+}
 h1 {
   font-size: 3vw;
 }
@@ -31,20 +34,37 @@ button {
 }
 .btn {
   padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+}
+.btn-link {
+  background: none;
+  border: none;
+  color: $black;
+}
+.btn-link:hover {
+  color: lighten($black, (25%));
 }
 .btn-primary {
-  background: $white;
+  background: $blue;
   border: 3px solid $blue;
-  color: $blue;
+  color: $white;
 }
 .btn-primary:hover {
-  background: $white;
   border: 3px solid $blue;
   border-color: lighten($blue, 15%);
-  color: lighten($blue, 15%);
+  background: lighten($blue, 15%);
 }
 .flex {
   display: flex;
+}
+.flex-center-x {
+  display: flex;
+  justify-content: center;
+}
+.flex-center-xy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .font-large {
   font-size: 2vw;
@@ -168,6 +188,7 @@ button {
   #theFuckingPlant {
     position: absolute;
     right: 10%;
+    bottom: 3%;
   }
 }
 
