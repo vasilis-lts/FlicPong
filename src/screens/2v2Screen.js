@@ -4,7 +4,7 @@ import "../App.scss";
 import Modal from "../components/Modal";
 import { Link } from "react-navi";
 import Audio from "../audio/AudioController";
-import { get } from "../helperFunctions";
+import Api from "../helperFunctions";
 
 function TeamRandomizer(props) {
   const [team1, setTeam1] = useState([]);
@@ -15,7 +15,7 @@ function TeamRandomizer(props) {
   }, []);
 
   async function randomizeTeams() {
-    const players = await get("http://localhost:3001/Api/GetPlayers");
+    const players = await Api.get("http://localhost:3001/Api/GetPlayers");
 
     const numberOfPlayers = players.length;
     const team1 = [];
@@ -27,9 +27,9 @@ function TeamRandomizer(props) {
       do {
         let randomIndex = Math.floor(Math.random() * players.length);
         if (players.length > numberOfPlayers / 2) {
-          team1.push(players[randomIndex].Name);
+          team1.push(players[randomIndex]);
         } else {
-          team2.push(players[randomIndex].Name);
+          team2.push(players[randomIndex]);
         }
         players.splice(randomIndex, 1);
       } while (players.length > 0);
@@ -59,7 +59,7 @@ function TeamRandomizer(props) {
               {team1.length ? (
                 team1.map((player, index) => (
                   <p key={index} className="box">
-                    {player}
+                    {player.Name}
                   </p>
                 ))
               ) : (
@@ -72,7 +72,7 @@ function TeamRandomizer(props) {
               {team2.length ? (
                 team2.map((player, index) => (
                   <p key={index} className="box">
-                    {player}
+                    {player.Name}
                   </p>
                 ))
               ) : (
