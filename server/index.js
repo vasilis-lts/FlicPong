@@ -1,24 +1,24 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/Api/GetPlayers", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
   let db = new sqlite3.Database("src/db/pingpong.db", err => {
-    let _res = res;
     if (err) {
-      console.error(err.message);
+      res.send(err);
     } else {
       db.all("SELECT * FROM Players", [], function(err, rows) {
         if (err) {
-          console.log(err);
+          res.send(err);
         } else {
-          _res.setHeader("Content-Type", "application/json");
-          _res.send(rows);
+          res.send(rows);
         }
         db.close();
       });
@@ -27,17 +27,25 @@ app.get("/Api/GetPlayers", (req, res) => {
 });
 
 app.post("/Api/Save2v2Match", function(req, res) {
-  console.log(req.body);
   const rb = req.body;
+  res.setHeader("Content-Type", "application/json");
   let db = new sqlite3.Database("src/db/pingpong.db", err => {
     if (err) {
-      console.error(err.message);
+      res.send(err);
     } else {
-      db.run(
-        `INSERT INTO Matches2v2 (Player1Team1, Player2Team1, Player1Team2, Player2Team2) VALUES (${
-          rb.Player1Team1Id
-        },${rb.Player2Team1Id},${rb.Player1Team2Id},${rb.Player2Team2Id})`
-      );
+      db.serialize(function() {
+        db.run(
+          `INSERT INTO Matches2v2 (Player1Team1, Player2Team1, Player1Team2, Player2Team2) VALUES (${rb.Player1Team1Id},${rb.Player2Team1Id},${rb.Player1Team2Id},${rb.Player2Team2Id})`,
+          function(err) {
+            if (err) {
+              res.send(err);
+            } else {
+              rb.MatchId = this.lastID;
+              res.send(rb);
+            }
+          }
+        );
+      });
 
       db.close();
     }

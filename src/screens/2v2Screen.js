@@ -10,18 +10,19 @@ import appSettings from "../appSettings";
 function TeamRandomizer(props) {
   const [team1, setTeam1] = useState([]);
   const [team2, setTeam2] = useState([]);
-  const [MatchStarted, setMatchStarted] = useState(false);
+  const [MatchInProgress, setMatchInProgress] = useState(false);
 
   useEffect(() => {
     randomizeTeams();
   }, []);
 
-  async function randomizeTeams() {
+  const randomizeTeams = async () => {
     const players = await Api.get(appSettings.endpoints.GetPlayers);
 
     const numberOfPlayers = players.length;
     const team1 = [];
     const team2 = [];
+    setMatchInProgress(false);
     setTeam1([]);
     setTeam2([]);
 
@@ -38,11 +39,11 @@ function TeamRandomizer(props) {
 
       setTeam1(team1);
       setTeam2(team2);
-    }, 3000);
-  }
+    }, 2000);
+  };
 
   const AcceptTeams = () => {
-    setMatchStarted(true);
+    setMatchInProgress(true);
     const postBody = prep2v2MatchBody();
 
     fetch(appSettings.endpoints.Save2v2Match, {
@@ -113,11 +114,26 @@ function TeamRandomizer(props) {
           </div>
         </div>
       </div>
-      {team1.length && team2.length && !MatchStarted ? (
+
+      {MatchInProgress ? (
         <div className="flex-center-xy">
           <button
             className="mt1 btn btn-primary font-large"
             onMouseEnter={() => Audio.menuMove()}
+            onClick={() => {
+              Audio.menuSelect();
+              randomizeTeams();
+            }}
+          >
+            New Match
+          </button>
+        </div>
+      ) : (
+        <div className="flex-center-xy">
+          <button
+            className="mt1 btn btn-primary font-large"
+            onMouseEnter={() => Audio.menuMove()}
+            disabled={team1.length === 0}
             onClick={() => {
               Audio.menuSelect();
               AcceptTeams();
@@ -128,6 +144,7 @@ function TeamRandomizer(props) {
           <button
             className="mt1 btn btn-link font-large"
             onMouseEnter={() => Audio.menuMove()}
+            disabled={team1.length === 0}
             onClick={() => {
               Audio.menuSelect();
               randomizeTeams();
@@ -136,7 +153,7 @@ function TeamRandomizer(props) {
             New Teams
           </button>
         </div>
-      ) : null}
+      )}
 
       <img
         width="100"

@@ -1,13 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Layout from "./Layout";
+import MainMenu from "./screens/MainMenu";
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
-  ReactDOM.render(<Layout />, div);
+  ReactDOM.render(<MainMenu />, div);
   ReactDOM.unmountComponentAtNode(div);
-});
-
-test("Fake Test", () => {
-  expect(true).toBeTruthy();
 });
