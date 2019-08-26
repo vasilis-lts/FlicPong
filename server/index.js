@@ -52,6 +52,56 @@ app.post("/Api/Save2v2Match", function(req, res) {
   });
 });
 
+app.post("/Api/UpdatePlayersWins", function(req, res) {
+  const rb = req.body;
+
+  console.log(rb);
+  res.setHeader("Content-Type", "application/json");
+  let db = new sqlite3.Database("src/db/pingpong.db", err => {
+    if (err) {
+      res.send(err);
+    } else {
+      for (let i = 0; i < rb.length; i++) {
+        db.serialize(function() {
+          console.log(rb[i]);
+          // Update GamesPlayed
+          db.run(
+            `UPDATE Players SET GamesPlayed = GamesPlayed + 1 WHERE Id = ${rb[i].PlayerId}`,
+            function(err) {
+              if (err) {
+                res.send(err);
+              } else {
+                // console.log(
+                //   `Player: ${rb[i].PlayerId} games played updated successfully! `
+                // );
+              }
+            }
+          );
+          // Update Wins
+          if (rb[i].Win) {
+            db.run(
+              `UPDATE Players SET Wins = Wins + 1 WHERE Id = ${rb[i].PlayerId}`,
+              function(err) {
+                if (err) {
+                  res.send(err);
+                } else {
+                  console.log(
+                    `Player: ${rb[i].PlayerId} wins updated successfully! `
+                  );
+                }
+              }
+            );
+          }
+        });
+      }
+
+      res.send({ message: "Players table updated" });
+
+      db.close();
+    }
+  });
+});
+
 app.listen(3001, () =>
   console.log("Express server is running on localhost:3001")
 );

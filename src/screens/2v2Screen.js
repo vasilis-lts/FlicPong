@@ -4,28 +4,39 @@ import "../App.scss";
 import Modal from "../components/Modal";
 import { Link } from "react-navi";
 import Audio from "../audio/AudioController";
-import Api from "../helperFunctions";
+import Api from "../ApiMethods";
 import appSettings from "../appSettings";
 import { Transition } from "react-spring/renderprops";
+import { saveGameWon2v2 } from "../controllers/2v2Controller";
+import { async } from "q";
 
 function TeamRandomizer() {
   const [team1, setTeam1] = useState([]);
   const [team2, setTeam2] = useState([]);
   const [MatchInProgress, setMatchInProgress] = useState(false);
+  const [MatchData, setMatchData] = useState({});
+  const [_Players, setPlayers] = useState([]);
 
   useEffect(() => {
+    if (localStorage.getItem("MatchInProgress")) {
+      console.log("Match in progress");
+    }
+
     randomizeTeams();
   }, []);
 
   const randomizeTeams = async () => {
+    localStorage.removeItem("MatchInProgress");
     const players = await Api.get(appSettings.endpoints.GetPlayers);
+    setPlayers([...players]);
 
     const numberOfPlayers = players.length;
-    const team1 = [];
-    const team2 = [];
-    setMatchInProgress(false);
+    let team1 = [];
+    let team2 = [];
+
     setTeam1([]);
     setTeam2([]);
+    setMatchInProgress(false);
 
     setTimeout(() => {
       do {
@@ -43,24 +54,21 @@ function TeamRandomizer() {
     }, 2000);
   };
 
-  const AcceptTeams = () => {
+  const AcceptTeams = async () => {
     setMatchInProgress(true);
     const postBody = prep2v2MatchBody();
 
-    fetch(appSettings.endpoints.Save2v2Match, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(postBody)
-    })
-      .then(response => response.json())
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    let _MatchData = await Api.post(
+      appSettings.endpoints.Save2v2Match,
+      postBody
+    );
+
+    if (typeof _MatchData === "object") {
+      setMatchData(_MatchData);
+      localStorage.setItem("MatchInProgress", JSON.stringify(_MatchData));
+    } else {
+      console.log(_MatchData);
+    }
   };
 
   const prep2v2MatchBody = () => {
@@ -72,17 +80,26 @@ function TeamRandomizer() {
     };
   };
 
+  const game2v2Win = winningTeam => {
+    if (MatchInProgress) {
+      console.log(MatchData.MatchId);
+      saveGameWon2v2(winningTeam, _Players);
+    }
+  };
+
   return (
     <div className="TeamRandomizer screen">
-      <Link href="/main" className="nav-link main-menu-link mt1">
-        {`<- Back to main menu`}
-      </Link>
       <div className="flex">
-        <div className="team-title red">
-          <h1>Team !Plant</h1>
+        <Link href="/main" className="nav-link main-menu-link mt1">
+          {`<- Back to main menu`}
+        </Link>
+      </div>
+      <div className="flex">
+        <div className="team-title red" onClick={() => game2v2Win(team1)}>
+          <h1>Red Team</h1>
         </div>
-        <div className="team-title green">
-          <h1>Team Plant</h1>
+        <div className="team-title green" onClick={() => game2v2Win(team2)}>
+          <h1>Plant Team</h1>
         </div>
       </div>
       <div className="teams-container">
@@ -115,8 +132,7 @@ function TeamRandomizer() {
           </div>
         </div>
       </div>
-
-      <div className="flex-center-xy mt2">
+      <div className="flex-center-xy mt3">
         <Transition
           items={MatchInProgress}
           config={{ duration: 200 }}
@@ -169,16 +185,14 @@ function TeamRandomizer() {
           }
         </Transition>
       </div>
-
       <img
-        width="100"
+        width="150"
         src={thefuckingplantImage}
         id="theFuckingPlant"
         alt="the fucking plant"
       />
-
       {!team1.length && !team2.length ? (
-        <Modal text="Randomizing Teams..." />
+        <Modal text="Shuffling positions..." />
       ) : null}
     </div>
   );
