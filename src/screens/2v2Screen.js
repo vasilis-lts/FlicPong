@@ -8,7 +8,7 @@ import Api from "../ApiMethods";
 import appSettings from "../appSettings";
 import { Transition } from "react-spring/renderprops";
 import { saveGameWon2v2 } from "../controllers/2v2Controller";
-import { async } from "q";
+import CoinFlip from "../components/CoinFlip";
 
 function TeamRandomizer() {
   const [team1, setTeam1] = useState([]);
@@ -16,6 +16,7 @@ function TeamRandomizer() {
   const [MatchInProgress, setMatchInProgress] = useState(false);
   const [MatchData, setMatchData] = useState({});
   const [_Players, setPlayers] = useState([]);
+  const [showCoinFlip, setShowCoinFlip] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("MatchInProgress")) {
@@ -89,10 +90,11 @@ function TeamRandomizer() {
 
   return (
     <div className="TeamRandomizer screen">
-      <div className="flex">
+      <div className="flex space-b">
         <Link href="/main" className="nav-link main-menu-link mt1">
           {`<- Back to main menu`}
         </Link>
+        <h2 onClick={() => setShowCoinFlip(true)}>Coin</h2>
       </div>
       <div className="flex">
         <div className="team-title red" onClick={() => game2v2Win(team1)}>
@@ -192,8 +194,15 @@ function TeamRandomizer() {
         alt="the fucking plant"
       />
       {!team1.length && !team2.length ? (
-        <Modal text="Shuffling positions..." />
+        <Modal>
+          <h1>Shuffling Positions</h1>
+        </Modal>
       ) : null}
+      {showCoinFlip && (
+        <Modal>
+          <CoinFlip autohide={() => setShowCoinFlip(false)} />
+        </Modal>
+      )}
     </div>
   );
 }

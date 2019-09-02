@@ -8,7 +8,7 @@ function Modal(props) {
 
   return (
     <div className="screen modal-outer flex">
-      <div className="modal">{props.text}</div>
+      <div className="modal">{props.children}</div>
     </div>
   );
 }
