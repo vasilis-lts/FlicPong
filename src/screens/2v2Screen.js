@@ -94,7 +94,9 @@ function TeamRandomizer() {
         <Link href="/main" className="nav-link main-menu-link mt1">
           {`<- Back to main menu`}
         </Link>
-        <h2 onClick={() => setShowCoinFlip(true)}>Coin</h2>
+        <h3 className="m0 btn-link" onClick={() => setShowCoinFlip(true)}>
+          Coin
+        </h3>
       </div>
       <div className="flex">
         <div className="team-title red" onClick={() => game2v2Win(team1)}>

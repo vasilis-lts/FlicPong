@@ -1,43 +1,53 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 
 export default function CoinFlip(props) {
-  useEffect(() => {
-    autohide();
-    // eslint-disable-next-line
-  }, []);
+  const [CoinState, setCoinState] = useState("");
+  const [ResultMessage, setResultMessage] = useState(
+    "Choose Red or Black then click the Coin!"
+  );
+  const [CoinFlipped, setCoinFlipped] = useState(false);
 
-  function autohide() {
+  function hideModal() {
     setTimeout(() => {
       props.autohide();
-    }, 10000);
+    }, 4000);
   }
 
   const flipIt = () => {
-    var flipResult = Math.random();
-    // $('#coin').removeClass();
-    const coinElem = document.getElementById("coin");
-    coinElem.className = "";
+    if (!CoinFlipped) {
+      var flipResult = Math.random();
+      setCoinState("");
+      setResultMessage("");
+      setCoinFlipped(true);
 
-    setTimeout(function() {
-      if (flipResult <= 0.5) {
-        // $('#coin').addClass('heads');
-        coinElem.classList.add("heads");
-        console.log("it is head");
-      } else {
-        coinElem.classList.add("tails");
+      setTimeout(function() {
+        if (flipResult <= 0.5) {
+          setCoinState("heads");
+          setTimeout(() => {
+            setResultMessage("Red Wins!");
+            hideModal();
+          }, 3000);
+        } else {
+          setCoinState("tails");
 
-        console.log("it is tails");
-      }
-    }, 100);
+          setTimeout(() => {
+            setResultMessage("Black Wins!");
+            hideModal();
+          }, 3000);
+        }
+      }, 100);
+    }
   };
 
   return (
-    <div className="p2">
-      <div id="coin" onClick={() => flipIt()}>
+    <div className="coin-container">
+      <div id="coin" className={CoinState} onClick={() => flipIt()}>
         <div class="side-a"></div>
         <div class="side-b"></div>
       </div>
-      <h1>Click on coin to flip</h1>
+      <h6 className="mt3" id="coinResult">
+        {ResultMessage}
+      </h6>
     </div>
   );
 }

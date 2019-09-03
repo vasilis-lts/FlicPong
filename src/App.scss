@@ -44,6 +44,7 @@ button {
   background: none;
   border: none;
   color: $black;
+  cursor: pointer;
 }
 .btn-link:hover {
   color: lighten($black, (25%));
@@ -226,6 +227,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .modal {
@@ -237,7 +239,16 @@ button {
 }
 
 // Coin Flip
+.coin-container {
+  width: 20vw;
+  height: 32vh;
+  padding: 1rem;
+  padding-bottom: 0;
 
+  #coinResult {
+    font-size: 1.5vw;
+  }
+}
 #coin {
   position: relative;
   margin: 0 auto;
