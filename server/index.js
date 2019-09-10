@@ -52,7 +52,7 @@ app.post("/Api/Save2v2Match", function(req, res) {
   });
 });
 
-app.post("/Api/UpdatePlayersWins", function(req, res) {
+app.post("/Api/UpdatePlayers2v2Wins", function(req, res) {
   const rb = req.body;
 
   console.log(rb);
@@ -77,16 +77,16 @@ app.post("/Api/UpdatePlayersWins", function(req, res) {
               }
             }
           );
-          // Update Wins
+          // Update 2v2 Wins
           if (rb[i].Win) {
             db.run(
-              `UPDATE Players SET Wins = Wins + 1 WHERE Id = ${rb[i].PlayerId}`,
+              `UPDATE Players SET Wins2v2 = Wins2v2 + 1 WHERE Id = ${rb[i].PlayerId}`,
               function(err) {
                 if (err) {
                   res.send(err);
                 } else {
                   console.log(
-                    `Player: ${rb[i].PlayerId} wins updated successfully! `
+                    `Player: ${rb[i].PlayerId} 2v2 wins updated successfully! `
                   );
                 }
               }

@@ -14,10 +14,9 @@ export const saveGameWon2v2 = async (winningTeam, players) => {
     }
     game2v2WonBody.push({ PlayerId: player.Id, Win });
   });
-  console.log(game2v2WonBody);
 
   let updatePlayersGames = await Api.post(
-    appSettings.endpoints.UpdatePlayersWins,
+    appSettings.endpoints.UpdatePlayers2v2Wins,
     game2v2WonBody
   );
 
