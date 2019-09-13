@@ -14,9 +14,12 @@ function TeamRandomizer() {
   const [team1, setTeam1] = useState([]);
   const [team2, setTeam2] = useState([]);
   const [MatchInProgress, setMatchInProgress] = useState(false);
+  // eslint-disable-next-line
   const [MatchData, setMatchData] = useState({});
   const [_Players, setPlayers] = useState([]);
   const [showCoinFlip, setShowCoinFlip] = useState(false);
+  const [ShowResultModal, setShowResultModal] = useState(false);
+  const [WinningTeam, setWinningTeam] = useState("");
 
   useEffect(() => {
     if (localStorage.getItem("MatchInProgress")) {
@@ -81,10 +84,17 @@ function TeamRandomizer() {
     };
   };
 
-  const game2v2Win = winningTeam => {
+  const game2v2Win = (teamName, winningTeam) => {
+    console.log("test" + teamName);
     if (MatchInProgress) {
-      console.log(MatchData.MatchId);
+      setMatchInProgress(false);
+      setShowResultModal(true);
+      setWinningTeam(teamName);
       saveGameWon2v2(winningTeam, _Players);
+
+      setTimeout(() => {
+        setShowResultModal(false);
+      }, 5000);
     }
   };
 
@@ -99,10 +109,16 @@ function TeamRandomizer() {
         </h3>
       </div>
       <div className="flex">
-        <div className="team-title red" onClick={() => game2v2Win(team1)}>
+        <div
+          className="team-title red"
+          onClick={() => game2v2Win("Red Team", team1)}
+        >
           <h1>Red Team</h1>
         </div>
-        <div className="team-title green" onClick={() => game2v2Win(team2)}>
+        <div
+          className="team-title green"
+          onClick={() => game2v2Win("Plant Team", team2)}
+        >
           <h1>Plant Team</h1>
         </div>
       </div>
@@ -200,6 +216,11 @@ function TeamRandomizer() {
           <h1>Shuffling Positions</h1>
         </Modal>
       ) : null}
+      {ShowResultModal && (
+        <Modal>
+          <h1>{WinningTeam} Wins!</h1>
+        </Modal>
+      )}
       {showCoinFlip && (
         <Modal>
           <CoinFlip autohide={() => setShowCoinFlip(false)} />
