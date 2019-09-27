@@ -42,8 +42,8 @@ export default function CoinFlip(props) {
   return (
     <div className="coin-container">
       <div id="coin" className={CoinState} onClick={() => flipIt()}>
-        <div class="side-a"></div>
-        <div class="side-b"></div>
+        <div className="side-a"></div>
+        <div className="side-b"></div>
       </div>
       <h6 className="mt3" id="coinResult">
         {ResultMessage}

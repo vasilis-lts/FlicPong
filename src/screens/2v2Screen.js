@@ -9,6 +9,7 @@ import appSettings from "../appSettings";
 import { Transition } from "react-spring/renderprops";
 import { saveGameWon2v2 } from "../controllers/2v2Controller";
 import CoinFlip from "../components/CoinFlip";
+import PlayerSelection from "../components/PlayerSelection";
 
 function TeamRandomizer() {
   const [team1, setTeam1] = useState([]);
@@ -16,46 +17,59 @@ function TeamRandomizer() {
   const [MatchInProgress, setMatchInProgress] = useState(false);
   // eslint-disable-next-line
   const [MatchData, setMatchData] = useState({});
-  const [_Players, setPlayers] = useState([]);
+  const [Players, setPlayers] = useState([]);
   const [showCoinFlip, setShowCoinFlip] = useState(false);
   const [ShowResultModal, setShowResultModal] = useState(false);
   const [WinningTeam, setWinningTeam] = useState("");
+  const [showPlayerSelection, setshowPlayerSelection] = useState(false);
+  const [PlayersSelected, setPlayersSelected] = useState([]);
 
   useEffect(() => {
-    if (localStorage.getItem("MatchInProgress")) {
-      console.log("Match in progress");
-    }
-
-    randomizeTeams();
+    getPlayers();
   }, []);
 
-  const randomizeTeams = async () => {
-    localStorage.removeItem("MatchInProgress");
+  useEffect(() => {
+    if (PlayersSelected.length > 0) {
+      randomizeTeams(PlayersSelected);
+    }
+    // eslint-disable-next-line
+  }, [PlayersSelected]);
+
+  const getPlayers = async () => {
     const players = await Api.get(appSettings.endpoints.GetPlayers);
     setPlayers([...players]);
+    setshowPlayerSelection(true);
+  };
 
-    const numberOfPlayers = players.length;
-    let team1 = [];
-    let team2 = [];
+  const randomizeTeams = () => {
+    const players = [...PlayersSelected];
 
-    setTeam1([]);
-    setTeam2([]);
-    setMatchInProgress(false);
+    if (PlayersSelected.length) {
+      localStorage.removeItem("MatchInProgress");
 
-    setTimeout(() => {
-      do {
-        let randomIndex = Math.floor(Math.random() * players.length);
-        if (players.length > numberOfPlayers / 2) {
-          team1.push(players[randomIndex]);
-        } else {
-          team2.push(players[randomIndex]);
-        }
-        players.splice(randomIndex, 1);
-      } while (players.length > 0);
+      const numberOfPlayers = players.length;
+      let team1 = [];
+      let team2 = [];
 
-      setTeam1(team1);
-      setTeam2(team2);
-    }, 2000);
+      setTeam1([]);
+      setTeam2([]);
+      setMatchInProgress(false);
+
+      setTimeout(() => {
+        do {
+          let randomIndex = Math.floor(Math.random() * players.length);
+          if (players.length > numberOfPlayers / 2) {
+            team1.push(players[randomIndex]);
+          } else {
+            team2.push(players[randomIndex]);
+          }
+          players.splice(randomIndex, 1);
+        } while (players.length > 0);
+
+        setTeam1(team1);
+        setTeam2(team2);
+      }, 2000);
+    }
   };
 
   const AcceptTeams = async () => {
@@ -90,12 +104,19 @@ function TeamRandomizer() {
       setMatchInProgress(false);
       setShowResultModal(true);
       setWinningTeam(teamName);
-      saveGameWon2v2(winningTeam, _Players);
+      saveGameWon2v2(winningTeam, Players);
 
       setTimeout(() => {
         setShowResultModal(false);
       }, 5000);
     }
+  };
+
+  const onPlayersSelected = playersSelected => {
+    const _playersSelected = [...playersSelected];
+    setPlayersSelected(_playersSelected);
+
+    setshowPlayerSelection(false);
   };
 
   return (
@@ -104,7 +125,7 @@ function TeamRandomizer() {
         <Link href="/main" className="nav-link main-menu-link mt1">
           {`<- Back to main menu`}
         </Link>
-        <h3 className="m0 btn-link" onClick={() => setShowCoinFlip(true)}>
+        <h3 className="mt1 btn-link" onClick={() => setShowCoinFlip(true)}>
           Coin
         </h3>
       </div>
@@ -224,6 +245,15 @@ function TeamRandomizer() {
       {showCoinFlip && (
         <Modal>
           <CoinFlip autohide={() => setShowCoinFlip(false)} />
+        </Modal>
+      )}
+      {showPlayerSelection && (
+        <Modal>
+          <PlayerSelection
+            players={Players}
+            playersAmount={4}
+            onPlayersSelected={onPlayersSelected}
+          />
         </Modal>
       )}
     </div>
