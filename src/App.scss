@@ -18,6 +18,7 @@ html,
 body {
   width: 100%;
   font-size: 24px;
+  overflow: hidden;
 }
 a {
   text-decoration: none;
@@ -177,9 +178,11 @@ button {
 ////////////////////////////
 
 .MainMenu {
+  position: absolute;
+  left: 0;
   .main-title {
     font-size: 10vw;
-    color: $green;
+    color: #0f0;
   }
   #mainMenuCoin {
     position: absolute;
