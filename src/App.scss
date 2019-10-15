@@ -7,7 +7,7 @@ $lightergray: #f1f2f3;
 $white: #ffffff;
 $blue: #001d86;
 $gray: #b8c0c5;
-$black: #222222;
+$black: #121212;
 
 * {
   box-sizing: border-box;
@@ -166,7 +166,7 @@ button {
   text-align: center;
   width: 100vw;
   height: 100vh;
-  background: rgba(93, 64, 55, 0.3);
+  background: $black;
   display: flex;
   justify-content: center;
   overflow: hidden;
@@ -179,7 +179,18 @@ button {
 .MainMenu {
   .main-title {
     font-size: 10vw;
-    color: lighten($blue, 15%);
+    color: $green;
+  }
+  #mainMenuCoin {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #222;
+    border-radius: 50%;
+    top: 40px;
+    right: 50px;
+    cursor: pointer;
+    z-index: 99;
   }
 }
 

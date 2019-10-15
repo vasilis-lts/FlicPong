@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "../App.scss";
 import { Link } from "react-navi";
 import Audio from "../audio/AudioController";
 
 import { useSpring, animated } from "react-spring";
+import Modal from "../components/Modal";
+import CoinFlip from "../components/CoinFlip";
 
 function MainMenu() {
+  const [showCoinFlip, setShowCoinFlip] = useState(false);
+
   const { x } = useSpring({
     from: { x: 0 },
     x: 1,
@@ -14,6 +18,8 @@ function MainMenu() {
 
   return (
     <div className="MainMenu screen">
+      <div id="mainMenuCoin" onClick={() => setShowCoinFlip(true)} />
+
       <animated.div
         style={{
           opacity: x.interpolate({ range: [0, 1], output: [0.3, 1] }),
@@ -25,9 +31,8 @@ function MainMenu() {
             .interpolate(x => `scale(${x})`)
         }}
       >
-        <h1 className="mt3 main-title">Ping Pong!</h1>
+        <h1 className="mt1 main-title">Ping Pong!</h1>
       </animated.div>
-      <h1>Start a new game:</h1>
       <div className="main-menu-contents">
         <Link href="/2v2" direction="forward">
           <button
@@ -39,6 +44,11 @@ function MainMenu() {
           </button>
         </Link>
       </div>
+      {showCoinFlip && (
+        <Modal>
+          <CoinFlip autohide={() => setShowCoinFlip(false)} />
+        </Modal>
+      )}
     </div>
   );
 }
