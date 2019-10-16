@@ -21,27 +21,30 @@ var ballSettings = {
   frictionAir: 0,
   restitution: 0.9,
   render: {
-    fillStyle: "#ffffff"
+    fillStyle: "#00f"
   }
 };
 
-var engine = Engine.create();
-let ball = Bodies.circle(-10, GAME_HEIGHT - 80, 20, ballSettings);
+let render;
 
 function pingPongAnimation() {
+  // Initialize
   this.run = function() {
     // create an engine
+    var engine = Engine.create();
     // create a renderer
-    var render = Render.create({
+    render = Render.create({
       element: document.getElementById("pingPongAnimationCanvas"),
       engine: engine,
       options: {
         width: GAME_WIDTH,
         height: GAME_HEIGHT,
         wireframes: false,
-        background: "#212121"
+        background: "wheat"
       }
     });
+
+    let ball = Bodies.circle(-10, GAME_HEIGHT - 80, 20, ballSettings);
 
     var bottomWall = Bodies.rectangle(
       GAME_WIDTH / 2,
@@ -51,7 +54,7 @@ function pingPongAnimation() {
       {
         isStatic: true,
         render: {
-          fillStyle: "#00ff00"
+          fillStyle: "#000"
         }
       }
     );
@@ -59,7 +62,7 @@ function pingPongAnimation() {
     var Net = Bodies.rectangle(GAME_WIDTH / 2, TABLE_POS_Y - 40, 5, 60, {
       isStatic: true,
       render: {
-        fillStyle: "#00ff00"
+        fillStyle: "#000"
       }
     });
 
@@ -78,38 +81,41 @@ function pingPongAnimation() {
     // run the renderer
     Render.run(render);
 
-    this.animationLoop();
+    this.animationLoop(ball);
   };
-  this.animationLoop = () => {
-    // let leftPlayerHits = true;
 
-    this.leftPlayerHit();
-    // leftPlayerHits = !leftPlayerHits;
-
-    // setInterval(() => {
-    //   leftPlayerHits ? this.leftPlayerHit2() : this.rightPlayerHit();
-    //   leftPlayerHits = !leftPlayerHits;
-    // }, 1000);
+  // Start animation Loop
+  this.animationLoop = ball => {
+    this.leftPlayerHit(ball);
   };
-  this.leftPlayerHit = () => {
+  this.leftPlayerHit = ball => {
     console.log("hit");
 
     Body.applyForce(
       ball,
       { x: ball.position.x, y: ball.position.y },
-      { x: 0.05, y: -0.015 }
+      { x: 0.065, y: -0.015 }
     );
   };
-  this.rightPlayerHit = () => {
-    console.log("hit2");
+  // this.rightPlayerHit = () => {
+  //   console.log("hit2");
 
-    Body.applyForce(
-      ball,
-      { x: ball.position.x, y: ball.position.y },
-      { x: -0.22, y: -0.015 }
-    );
+  //   Body.applyForce(
+  //     ball,
+  //     { x: ball.position.x, y: ball.position.y },
+  //     { x: -0.22, y: -0.015 }
+  //   );
+  // };
+
+  // Clear animation canvas
+  this.renderClear = () => {
+    console.log("clear render");
+    console.log(render);
+    render.canvas.remove();
+    // render.canvas = null;
+    // render.context = null;
+    // render.textures = {};
   };
-
   // Matter.Composite.remove(world, body)
   // end
 }

@@ -12,12 +12,12 @@ function MainMenu() {
   const [showCoinFlip, setShowCoinFlip] = useState(false);
 
   useEffect(() => {
+    let ppA = new pingPongAnimation();
     setTimeout(() => {
-      let ppA = new pingPongAnimation();
       ppA.run();
     }, 1000);
     return () => {
-      // animation
+      ppA.renderClear();
     };
   }, []);
 
