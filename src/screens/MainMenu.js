@@ -13,9 +13,9 @@ function MainMenu() {
 
   useEffect(() => {
     let ppA = new pingPongAnimation();
-    setTimeout(() => {
-      ppA.run();
-    }, 1000);
+    // setTimeout(() => {
+    //   ppA.run();
+    // }, 1000);
     return () => {
       ppA.renderClear();
     };
