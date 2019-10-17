@@ -6,19 +6,23 @@ import Audio from "../audio/AudioController";
 import { useSpring, animated } from "react-spring";
 import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
-import pingPongAnimation from "./pingPongAnimation";
+// import pingPongAnimation from "./pingPongAnimation";
 
 function MainMenu() {
   const [showCoinFlip, setShowCoinFlip] = useState(false);
+  const [TitleAnimationDone, setTitleAnimationDone] = useState(false);
 
   useEffect(() => {
-    let ppA = new pingPongAnimation();
+    // let ppA = new pingPongAnimation();
     // setTimeout(() => {
     //   ppA.run();
     // }, 1000);
-    return () => {
-      ppA.renderClear();
-    };
+    // return () => {
+    //   ppA.renderClear();
+    // };
+    setTimeout(() => {
+      setTitleAnimationDone(true);
+    }, 1000);
   }, []);
 
   const { x } = useSpring({
@@ -34,6 +38,9 @@ function MainMenu() {
 
         <animated.div
           style={{
+            marginTop: "-2rem",
+            display: "flex",
+            justifyContent: "center",
             opacity: x.interpolate({ range: [0, 1], output: [0.3, 1] }),
             transform: x
               .interpolate({
@@ -43,8 +50,15 @@ function MainMenu() {
               .interpolate(x => `scale(${x})`)
           }}
         >
-          <h1 className="mt1 main-title">Ping Pong!</h1>
+          <h2
+            className={`main-title ${
+              TitleAnimationDone ? "borderColorAnim" : ""
+            }`}
+          >
+            Ping Pong!
+          </h2>
         </animated.div>
+
         <div className="main-menu-contents">
           <Link href="/2v2" direction="forward">
             <button
@@ -56,6 +70,7 @@ function MainMenu() {
             </button>
           </Link>
         </div>
+
         {showCoinFlip && (
           <Modal>
             <CoinFlip autohide={() => setShowCoinFlip(false)} />

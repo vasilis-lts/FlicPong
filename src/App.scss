@@ -9,7 +9,9 @@ $blue: #00f;
 $gray: #b8c0c5;
 $black: #121212;
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   font-family: "Acme", sans-serif;
 }
@@ -79,17 +81,15 @@ button {
   font-size: 2vw;
 }
 .main-menu-btn {
-  font-size: 5vw;
-  background: $blue;
-  padding: 0.5rem 4rem;
-  border: 4px solid $green;
-  color: $green;
+  font-size: 4vw;
+  background: $black;
+  padding: 0.5rem 3rem;
+  border: 4px solid #f0f;
+  border-radius: 4px;
+  color: #f0f;
 }
 .main-menu-btn:hover {
-  border: 4px solid $green;
-  color: lighten($green, 15%);
-  border-color: lighten($green, 15%);
-  background: lighten($blue, 15%);
+  background: #fff;
 }
 .screen {
   width: 100vw;
@@ -173,7 +173,7 @@ button {
   overflow: hidden;
 }
 
-////////////////////////////
+////////////////////////////main
 ///////// SCREENS //////////
 ////////////////////////////
 
@@ -181,7 +181,11 @@ button {
   position: absolute;
   left: 0;
   top: 0;
+  background: $black;
+
   .main-title {
+    border: 10px solid $black;
+    padding: 1rem 3rem;
     font-size: 10vw;
     color: #00f;
   }
@@ -189,7 +193,7 @@ button {
     position: absolute;
     width: 50px;
     height: 50px;
-    background: wheat;
+    background: $black;
     border-radius: 50%;
     top: 40px;
     right: 50px;
@@ -365,5 +369,51 @@ button {
     transform: rotateY(1980deg);
     -moz-transform: rotateY(1980deg);
     transform: rotateY(1980deg);
+  }
+}
+@keyframes rotate {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.borderColorAnim {
+  animation: colorchange 20s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes colorchange {
+  0% {
+    color: red;
+  }
+  25% {
+    color: yellow;
+  }
+  50% {
+    color: blue;
+  }
+  75% {
+    color: green;
+  }
+  100% {
+    color: red;
+  }
+}
+
+@-webkit-keyframes colorchange /* Safari and Chrome - necessary duplicate */ {
+  0% {
+    color: red;
+  }
+  25% {
+    color: yellow;
+  }
+  50% {
+    color: blue;
+  }
+  75% {
+    color: green;
+  }
+  100% {
+    color: red;
   }
 }
