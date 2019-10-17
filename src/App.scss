@@ -85,11 +85,11 @@ button {
   background: $black;
   padding: 0.5rem 3rem;
   border: 4px solid #f0f;
-  border-radius: 4px;
   color: #f0f;
 }
 .main-menu-btn:hover {
-  background: #fff;
+  color: lighten(#f0f, 50%);
+  border-color: lighten(#f0f, 50%);
 }
 .screen {
   width: 100vw;
@@ -187,7 +187,7 @@ button {
     border: 10px solid $black;
     padding: 1rem 3rem;
     font-size: 10vw;
-    color: #00f;
+    color: #f00;
   }
   #mainMenuCoin {
     position: absolute;
@@ -377,6 +377,8 @@ button {
   }
 }
 
+// MAIN MENU TITLE ANIMATION
+
 .borderColorAnim {
   animation: colorchange 20s;
   animation-iteration-count: infinite;
@@ -415,5 +417,51 @@ button {
   }
   100% {
     color: red;
+  }
+}
+
+// BOUNCIN' BALL
+
+.bouncingball {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  background: #fff;
+  animation: bounce 1s;
+  transform: translateY(0px);
+  animation-iteration-count: infinite;
+  position: absolute;
+  margin: 50px;
+}
+
+@keyframes bounce {
+  0% {
+    top: 0;
+    -webkit-animation-timing-function: ease-in;
+  }
+  40% {
+  }
+  50% {
+    top: 140px;
+    height: 140px;
+    -webkit-animation-timing-function: ease-out;
+  }
+  55% {
+    top: 160px;
+    height: 140px;
+    -webkit-animation-timing-function: ease-in;
+  }
+  65% {
+    top: 140px;
+    height: 140px;
+    -webkit-animation-timing-function: ease-out;
+  }
+  95% {
+    top: 0;
+    -webkit-animation-timing-function: ease-in;
+  }
+  100% {
+    top: 0;
+    -webkit-animation-timing-function: ease-in;
   }
 }
