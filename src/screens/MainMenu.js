@@ -6,23 +6,20 @@ import Audio from "../audio/AudioController";
 import { useSpring, animated } from "react-spring";
 import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
-// import pingPongAnimation from "./pingPongAnimation";
+import ballBounceAnimRun from "./ballBounceAnimation";
 
 function MainMenu() {
   const [showCoinFlip, setShowCoinFlip] = useState(false);
   const [TitleAnimationDone, setTitleAnimationDone] = useState(false);
 
   useEffect(() => {
-    // let ppA = new pingPongAnimation();
-    // setTimeout(() => {
-    //   ppA.run();
-    // }, 1000);
-    // return () => {
-    //   ppA.renderClear();
-    // };
     setTimeout(() => {
       setTitleAnimationDone(true);
     }, 1000);
+
+    setInterval(() => {
+      ballBounceAnimRun();
+    }, 500000);
   }, []);
 
   const { x } = useSpring({
@@ -59,7 +56,7 @@ function MainMenu() {
           </h2>
         </animated.div>
 
-        <h3 className="white mt2">Choose game mode:</h3>
+        <h1 className="white mt2">Choose game mode:</h1>
         <div className="main-menu-contents">
           <Link href="/2v2" direction="forward">
             <button
@@ -78,7 +75,7 @@ function MainMenu() {
           </Modal>
         )}
       </div>
-      {/* <div className="bouncing-ball"></div> */}
+      <div id="ball"></div>
       <div id="pingPongAnimationCanvas" />
     </div>
   );

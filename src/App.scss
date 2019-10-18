@@ -13,6 +13,8 @@ $black: #121212;
 *::before,
 *::after {
   box-sizing: border-box;
+}
+* {
   font-family: "Acme", sans-serif;
 }
 
@@ -469,4 +471,15 @@ button {
     bottom: 0;
     -webkit-animation-timing-function: ease-in;
   }
+}
+
+#ball {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: -50px;
+  margin-top: -50px;
 }
