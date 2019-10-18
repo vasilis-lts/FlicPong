@@ -88,8 +88,8 @@ button {
   color: #f0f;
 }
 .main-menu-btn:hover {
-  color: lighten(#f0f, 50%);
-  border-color: lighten(#f0f, 50%);
+  color: lighten(#f0f, 25%);
+  border-color: lighten(#f0f, 25%);
 }
 .screen {
   width: 100vw;
@@ -112,6 +112,9 @@ button {
 }
 .space-b {
   justify-content: space-between;
+}
+.white {
+  color: $white;
 }
 
 //Dimensions
@@ -173,7 +176,7 @@ button {
   overflow: hidden;
 }
 
-////////////////////////////main
+////////////////////////////
 ///////// SCREENS //////////
 ////////////////////////////
 
@@ -186,8 +189,10 @@ button {
   .main-title {
     border: 10px solid $black;
     padding: 1rem 3rem;
-    font-size: 10vw;
+    font-size: 15vw;
     color: #f00;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
   }
   #mainMenuCoin {
     position: absolute;
@@ -422,7 +427,7 @@ button {
 
 // BOUNCIN' BALL
 
-.bouncingball {
+.bouncing-ball {
   width: 80px;
   height: 80px;
   border-radius: 100%;
@@ -436,32 +441,32 @@ button {
 
 @keyframes bounce {
   0% {
-    top: 0;
+    bottom: 0;
     -webkit-animation-timing-function: ease-in;
   }
   40% {
   }
   50% {
-    top: 140px;
-    height: 140px;
+    bottom: 140px;
+
     -webkit-animation-timing-function: ease-out;
   }
   55% {
-    top: 160px;
-    height: 140px;
+    bottom: 160px;
+
     -webkit-animation-timing-function: ease-in;
   }
   65% {
-    top: 140px;
-    height: 140px;
+    bottom: 140px;
+
     -webkit-animation-timing-function: ease-out;
   }
   95% {
-    top: 0;
+    bottom: 0;
     -webkit-animation-timing-function: ease-in;
   }
   100% {
-    top: 0;
+    bottom: 0;
     -webkit-animation-timing-function: ease-in;
   }
 }

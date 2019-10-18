@@ -59,6 +59,7 @@ function MainMenu() {
           </h2>
         </animated.div>
 
+        <h3 className="white mt2">Choose game mode:</h3>
         <div className="main-menu-contents">
           <Link href="/2v2" direction="forward">
             <button
@@ -77,6 +78,7 @@ function MainMenu() {
           </Modal>
         )}
       </div>
+      {/* <div className="bouncing-ball"></div> */}
       <div id="pingPongAnimationCanvas" />
     </div>
   );
