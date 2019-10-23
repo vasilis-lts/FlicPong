@@ -24,7 +24,6 @@ function MainMenu() {
     }, 20000);
 
     return () => {
-      console.log(animInterval);
       clearInterval(animInterval);
     };
 

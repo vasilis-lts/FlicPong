@@ -37,7 +37,6 @@ function TeamRandomizer() {
 
   const getPlayers = async () => {
     const players = await Api.get(appSettings.endpoints.GetPlayers);
-    console.log(players);
     setPlayers([...players]);
     setshowPlayerSelection(true);
   };
@@ -90,14 +89,14 @@ function TeamRandomizer() {
     // }
   };
 
-  const prep2v2MatchBody = () => {
-    return {
-      Player1Team1Id: team1[0].Id,
-      Player2Team1Id: team1[1].Id,
-      Player1Team2Id: team2[0].Id,
-      Player2Team2Id: team2[1].Id
-    };
-  };
+  // const prep2v2MatchBody = () => {
+  //   return {
+  //     Player1Team1Id: team1[0].Id,
+  //     Player2Team1Id: team1[1].Id,
+  //     Player1Team2Id: team2[0].Id,
+  //     Player2Team2Id: team2[1].Id
+  //   };
+  // };
 
   const game2v2Win = (teamName, winningTeam) => {
     console.log("test" + teamName);
