@@ -25,22 +25,24 @@ midSpot2.y = WINDOW_HEIGHT / 1.25;
 
 function ballBounceAnimRun() {
   YUI().use("anim", function(Y) {
-    var node = Y.one("#ball");
+    var ball = Y.one("#ball");
 
     var anim = new Y.Anim({
-      node: node,
+      node: ball,
       duration: 0.5,
       easing: Y.Easing.easeNone
     });
 
     var anim2 = new Y.Anim({
-      node: node,
+      node: ball,
       duration: 0.2,
       easing: Y.Easing.easeOut
     });
 
     var setToAnimStart = function() {
-      node.setStyles({ left: startingSpot.x, top: startingSpot.y }); // Where x0, y0 is the animation starting point
+      if (ball) {
+        ball.setStyles({ left: startingSpot.x, top: startingSpot.y }); // Where x0, y0 is the animation starting point
+      }
     };
 
     // var setToAnimStart2 = function() {
@@ -51,14 +53,18 @@ function ballBounceAnimRun() {
       anim.set("to", {
         curve: [[midSpot.x, midSpot.y], [endingSpot.x, endingSpot.y]] // Where 1 and 2 are curve control points, and 3 is the end point.
       });
-      anim.run();
+      if (ball) {
+        anim.run();
+      }
     };
 
     var startAnim2 = function(e) {
       anim2.set("to", {
         curve: [[midSpot2.x, midSpot2.y], [endingSpot2.x, endingSpot2.y]] // Where 1 and 2 are curve control points, and 3 is the end point.
       });
-      anim2.run();
+      if (ball) {
+        anim2.run();
+      }
     };
 
     var onEnd = function() {

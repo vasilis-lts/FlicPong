@@ -8,6 +8,8 @@ import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
 import ballBounceAnimRun from "./ballBounceAnimation";
 
+let animInterval;
+
 function MainMenu() {
   const [showCoinFlip, setShowCoinFlip] = useState(false);
   const [TitleAnimationDone, setTitleAnimationDone] = useState(false);
@@ -17,9 +19,16 @@ function MainMenu() {
       setTitleAnimationDone(true);
     }, 1000);
 
-    setInterval(() => {
+    animInterval = setInterval(() => {
       ballBounceAnimRun();
-    }, 500000);
+    }, 20000);
+
+    return () => {
+      console.log(animInterval);
+      clearInterval(animInterval);
+    };
+
+    // eslint-disable-next-line
   }, []);
 
   const { x } = useSpring({
