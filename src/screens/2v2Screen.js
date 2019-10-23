@@ -37,6 +37,7 @@ function TeamRandomizer() {
 
   const getPlayers = async () => {
     const players = await Api.get(appSettings.endpoints.GetPlayers);
+    console.log(players);
     setPlayers([...players]);
     setshowPlayerSelection(true);
   };
@@ -74,19 +75,19 @@ function TeamRandomizer() {
 
   const AcceptTeams = async () => {
     setMatchInProgress(true);
-    const postBody = prep2v2MatchBody();
+    // const postBody = prep2v2MatchBody();
 
-    let _MatchData = await Api.post(
-      appSettings.endpoints.Save2v2Match,
-      postBody
-    );
+    // let _MatchData = await Api.post(
+    //   appSettings.endpoints.Save2v2Match,
+    //   postBody
+    // );
 
-    if (typeof _MatchData === "object") {
-      setMatchData(_MatchData);
-      localStorage.setItem("MatchInProgress", JSON.stringify(_MatchData));
-    } else {
-      console.log(_MatchData);
-    }
+    // if (typeof _MatchData === "object") {
+    // setMatchData(_MatchData);
+    // localStorage.setItem("MatchInProgress", JSON.stringify(_MatchData));
+    // } else {
+    //   console.log(_MatchData);
+    // }
   };
 
   const prep2v2MatchBody = () => {
