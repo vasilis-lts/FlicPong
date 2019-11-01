@@ -1,6 +1,6 @@
 # Ping Pong
 
-Helper fun app for table tennis games!
+Helper fun app for table tennis games in the office!
 
 ## Get it started
 
