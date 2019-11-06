@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-navi";
 
 export default function PlayerSelection(props) {
   const style = {
@@ -9,18 +10,12 @@ export default function PlayerSelection(props) {
     }
   };
 
-  const [HoveredBox, setHoveredBox] = useState(null);
   const [SelectedBoxes, setSelectedBoxes] = useState([]);
   const [SelectedPlayers, setSelectedPlayers] = useState([]);
 
   useEffect(() => {
     // console.log(props.players);
   }, [props.players]);
-
-  function selectBoxHovered(e) {
-    const hoveredBox = parseInt(e.target.id, 10);
-    setHoveredBox(hoveredBox);
-  }
 
   const isPlayerSelected = id => {
     const _selectedPlayers = [...SelectedPlayers];
@@ -69,10 +64,13 @@ export default function PlayerSelection(props) {
         <h1>Players select!</h1>
         <h3>
           {SelectedPlayers.length <= props.playersAmount - 1 ? (
-            `Select ${4 - SelectedPlayers.length} ${
-              SelectedPlayers.length !== 0 ? "more" : ""
-            } player${SelectedPlayers.length < 3 ? "s" : ""} `
+            <Link href="/main-menu" direction="forward">
+              <h3 className="m0">Back to main menu</h3>
+            </Link>
           ) : (
+            // `Select ${4 - SelectedPlayers.length} ${
+            //   SelectedPlayers.length !== 0 ? "more" : ""
+            // } player${SelectedPlayers.length < 3 ? "s" : ""} `
             <button
               className="btn btn-primary"
               onClick={() => props.onPlayersSelected(SelectedPlayers)}
@@ -86,12 +84,10 @@ export default function PlayerSelection(props) {
         {props.players.map((player, index) => (
           <div
             className={`player-select-box ${
-              HoveredBox === index ? "hovered" : ""
-            } ${SelectedBoxes.indexOf(index) !== -1 ? "selected" : ""}`}
+              SelectedBoxes.indexOf(index) !== -1 ? "selected" : ""
+            }`}
             key={player.Id}
             id={index}
-            onMouseEnter={e => selectBoxHovered(e)}
-            onMouseLeave={() => setHoveredBox(null)}
             onClick={e => selectBoxClicked(e)}
           >
             {player.Name}
