@@ -192,7 +192,7 @@ button {
     border: 10px solid $black;
     padding: 1rem 3rem;
     font-size: 15vw;
-    color: #f00;
+    color: $green;
     margin-bottom: 1rem;
     margin-top: 2rem;
   }
@@ -280,6 +280,7 @@ button {
   margin: 0 0.5rem;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .player-select-box.selected {
@@ -296,6 +297,24 @@ button {
 .player-select-box.selected:hover {
   border-color: darken($green, 15);
   color: darken($green, 15);
+}
+
+.country-selection {
+  margin-left: 2rem;
+  padding: 0.2rem 0.5rem;
+  height: 3vw;
+  cursor: pointer;
+}
+.country-selection:hover {
+  color: lighten($black, 25);
+}
+.highlighted-country {
+  background: $black;
+  color: $green;
+}
+.country-selection.highlighted-country:hover {
+  background: lighten($black, 25);
+  color: $green;
 }
 
 // Coin Flip

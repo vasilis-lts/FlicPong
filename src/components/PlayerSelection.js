@@ -12,10 +12,16 @@ export default function PlayerSelection(props) {
 
   const [SelectedBoxes, setSelectedBoxes] = useState([]);
   const [SelectedPlayers, setSelectedPlayers] = useState([]);
+  const [CountryActive, setCountryActive] = useState("GR");
+  const [ActivePlayersByCountry, setActivePlayersByCountry] = useState([]);
 
   useEffect(() => {
-    // console.log(props.players);
-  }, [props.players]);
+    const playersActive = props.players.filter(player => {
+      return player.Country === CountryActive;
+    });
+    setActivePlayersByCountry(playersActive);
+    // eslint-disable-next-line
+  }, [CountryActive]);
 
   const isPlayerSelected = id => {
     const _selectedPlayers = [...SelectedPlayers];
@@ -25,7 +31,7 @@ export default function PlayerSelection(props) {
     if (_selectedPlayers.length) {
       // check if player is selected
       _selectedPlayers.forEach((player, index) => {
-        if (props.players[id].Name === player.Name) {
+        if (props.players[id - 1].Name === player.Name) {
           playerSelected = true;
           i = index;
         }
@@ -35,12 +41,12 @@ export default function PlayerSelection(props) {
     return [playerSelected, i];
   };
 
-  function selectBoxClicked(e) {
+  function selectBoxClicked(e, playerId) {
     // id equals index in players list
 
     const _selectedPlayers = [...SelectedPlayers];
     const _selectedBoxes = [...SelectedBoxes];
-    const clickedBox = parseInt(e.target.id, 10);
+    const clickedBox = playerId;
 
     const [playerSelected, index] = isPlayerSelected(clickedBox);
 
@@ -49,7 +55,7 @@ export default function PlayerSelection(props) {
       _selectedBoxes.splice(_selectedBoxes.indexOf(clickedBox), 1);
     } else {
       if (SelectedPlayers.length < props.playersAmount) {
-        _selectedPlayers.push(props.players[clickedBox]);
+        _selectedPlayers.push(props.players[clickedBox - 1]);
         _selectedBoxes.push(clickedBox);
       }
     }
@@ -61,7 +67,25 @@ export default function PlayerSelection(props) {
   return (
     <div>
       <div className="flex sb">
-        <h1>Players select!</h1>
+        <div className="flex">
+          <h1>Players select!</h1>
+          <h3
+            className={`country-selection ${
+              CountryActive === "GR" ? "highlighted-country" : ""
+            }`}
+            onClick={() => setCountryActive("GR")}
+          >
+            GR
+          </h3>
+          <h3
+            className={`country-selection ${
+              CountryActive === "NL" ? "highlighted-country" : ""
+            }`}
+            onClick={() => setCountryActive("NL")}
+          >
+            NL
+          </h3>
+        </div>
         <h3>
           {SelectedPlayers.length <= props.playersAmount - 1 ? (
             <Link href="/main-menu" direction="forward">
@@ -81,14 +105,14 @@ export default function PlayerSelection(props) {
         </h3>
       </div>
       <div className="flex">
-        {props.players.map((player, index) => (
+        {ActivePlayersByCountry.map((player, index) => (
           <div
             className={`player-select-box ${
-              SelectedBoxes.indexOf(index) !== -1 ? "selected" : ""
+              SelectedBoxes.includes(player.Id) ? "selected" : ""
             }`}
             key={player.Id}
             id={index}
-            onClick={e => selectBoxClicked(e)}
+            onClick={e => selectBoxClicked(e, player.Id)}
           >
             {player.Name}
           </div>

@@ -12,13 +12,8 @@ let animInterval;
 
 function MainMenu() {
   const [showCoinFlip, setShowCoinFlip] = useState(false);
-  const [TitleAnimationDone, setTitleAnimationDone] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      setTitleAnimationDone(true);
-    }, 1000);
-
     animInterval = setInterval(() => {
       ballBounceAnimRun();
     }, 20000);
@@ -55,13 +50,7 @@ function MainMenu() {
               .interpolate(x => `scale(${x})`)
           }}
         >
-          <h2
-            className={`main-title ${
-              TitleAnimationDone ? "borderColorAnim" : ""
-            }`}
-          >
-            Ping Pong!
-          </h2>
+          <h2 className={`main-title`}>Ping Pong!</h2>
         </animated.div>
 
         <h1 className="white mt2">Choose game mode:</h1>

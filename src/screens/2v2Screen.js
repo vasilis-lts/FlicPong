@@ -219,7 +219,7 @@ function TeamRandomizer() {
                         randomizeTeams();
                       }}
                     >
-                      New Teams
+                      Randomize positions!
                     </button>
                   </div>
                 )
