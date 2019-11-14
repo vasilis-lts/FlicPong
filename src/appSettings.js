@@ -1,4 +1,4 @@
-const BaseUrl = "/Api";
+const BaseUrl = "http://localhost:3001/Api";
 
 const appSettings = {
   endpoints: {
