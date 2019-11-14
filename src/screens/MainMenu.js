@@ -3,7 +3,6 @@ import "../App.scss";
 import { Link } from "react-navi";
 import Audio from "../audio/AudioController";
 
-import { useSpring, animated } from "react-spring";
 import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
 import ballBounceAnimRun from "./ballBounceAnimation";
@@ -25,33 +24,12 @@ function MainMenu() {
     // eslint-disable-next-line
   }, []);
 
-  const { x } = useSpring({
-    from: { x: 0 },
-    x: 1,
-    config: { duration: 1200 }
-  });
-
   return (
     <div className="main-menu-outer">
       <div className="MainMenu screen">
         <div id="mainMenuCoin" onClick={() => setShowCoinFlip(true)} />
 
-        <animated.div
-          style={{
-            marginTop: "-2rem",
-            display: "flex",
-            justifyContent: "center",
-            opacity: x.interpolate({ range: [0, 1], output: [0.3, 1] }),
-            transform: x
-              .interpolate({
-                range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
-                output: [1, 0.97, 0.9, 1.03, 0.9, 1.03, 1]
-              })
-              .interpolate(x => `scale(${x})`)
-          }}
-        >
-          <h2 className={`main-title`}>Ping Pong!</h2>
-        </animated.div>
+        <h2 className={`main-title`}>Ping Pong!</h2>
 
         <h1 className="white mt2">Choose game mode:</h1>
         <div className="main-menu-contents">

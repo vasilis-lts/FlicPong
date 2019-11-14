@@ -6,7 +6,6 @@ import { Link } from "react-navi";
 import Audio from "../audio/AudioController";
 import Api from "../ApiMethods";
 import appSettings from "../appSettings";
-import { Transition } from "react-spring/renderprops";
 import { saveGameWon2v2 } from "../controllers/2v2Controller";
 import CoinFlip from "../components/CoinFlip";
 import PlayerSelection from "../components/PlayerSelection";
@@ -74,29 +73,7 @@ function TeamRandomizer() {
 
   const AcceptTeams = async () => {
     setMatchInProgress(true);
-    // const postBody = prep2v2MatchBody();
-
-    // let _MatchData = await Api.post(
-    //   appSettings.endpoints.Save2v2Match,
-    //   postBody
-    // );
-
-    // if (typeof _MatchData === "object") {
-    // setMatchData(_MatchData);
-    // localStorage.setItem("MatchInProgress", JSON.stringify(_MatchData));
-    // } else {
-    //   console.log(_MatchData);
-    // }
   };
-
-  // const prep2v2MatchBody = () => {
-  //   return {
-  //     Player1Team1Id: team1[0].Id,
-  //     Player2Team1Id: team1[1].Id,
-  //     Player1Team2Id: team2[0].Id,
-  //     Player2Team2Id: team2[1].Id
-  //   };
-  // };
 
   const game2v2Win = (teamName, winningTeam) => {
     console.log("test" + teamName);
@@ -174,57 +151,49 @@ function TeamRandomizer() {
         </div>
       </div>
       <div className="flex-center-xy mt3">
-        <Transition
-          items={MatchInProgress}
-          config={{ duration: 200 }}
-          from={{ position: "absolute", opacity: 0, transform: "scale(0.6)" }}
-          enter={{ opacity: 1, transform: "scale(1)" }}
-          leave={{ opacity: 0, transform: "scale(0.6)" }}
-        >
-          {MatchInProgress =>
-            MatchInProgress
-              ? props => (
-                  <div style={props}>
-                    <button
-                      className="btn btn-primary font-large"
-                      onMouseEnter={() => Audio.menuMove()}
-                      onClick={() => {
-                        Audio.menuSelect();
-                        randomizeTeams();
-                      }}
-                    >
-                      New Match
-                    </button>
-                  </div>
-                )
-              : props => (
-                  <div style={props}>
-                    <button
-                      className="btn btn-primary font-large"
-                      onMouseEnter={() => Audio.menuMove()}
-                      disabled={team1.length === 0}
-                      onClick={() => {
-                        Audio.menuSelect();
-                        AcceptTeams();
-                      }}
-                    >
-                      Begin Match
-                    </button>
-                    <button
-                      className="btn btn-link font-large"
-                      onMouseEnter={() => Audio.menuMove()}
-                      disabled={team1.length === 0}
-                      onClick={() => {
-                        Audio.menuSelect();
-                        randomizeTeams();
-                      }}
-                    >
-                      Randomize positions!
-                    </button>
-                  </div>
-                )
-          }
-        </Transition>
+        {MatchInProgress =>
+          MatchInProgress
+            ? props => (
+                <div style={props}>
+                  <button
+                    className="btn btn-primary font-large"
+                    onMouseEnter={() => Audio.menuMove()}
+                    onClick={() => {
+                      Audio.menuSelect();
+                      randomizeTeams();
+                    }}
+                  >
+                    New Match
+                  </button>
+                </div>
+              )
+            : props => (
+                <div style={props}>
+                  <button
+                    className="btn btn-primary font-large"
+                    onMouseEnter={() => Audio.menuMove()}
+                    disabled={team1.length === 0}
+                    onClick={() => {
+                      Audio.menuSelect();
+                      AcceptTeams();
+                    }}
+                  >
+                    Begin Match
+                  </button>
+                  <button
+                    className="btn btn-link font-large"
+                    onMouseEnter={() => Audio.menuMove()}
+                    disabled={team1.length === 0}
+                    onClick={() => {
+                      Audio.menuSelect();
+                      randomizeTeams();
+                    }}
+                  >
+                    Randomize positions!
+                  </button>
+                </div>
+              )
+        }
       </div>
       <img
         width="150"
