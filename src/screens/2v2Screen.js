@@ -9,7 +9,6 @@ import appSettings from "../appSettings";
 import { saveGameWon2v2 } from "../controllers/2v2Controller";
 import CoinFlip from "../components/CoinFlip";
 import PlayerSelection from "../components/PlayerSelection";
-import SnowStorm from "react-snowstorm";
 
 function TeamRandomizer() {
   const [team1, setTeam1] = useState([]);
@@ -99,13 +98,6 @@ function TeamRandomizer() {
 
   return (
     <div className="TeamRandomizer screen">
-      <SnowStorm
-        animationInterval={60}
-        flakesMax={10}
-        vMaxY={2}
-        vMaxX={2}
-        followMouse={false}
-      />
       <div className="flex space-b">
         <Link href="/main" className="nav-link main-menu-link mt1">
           {`<- Back to main menu`}
