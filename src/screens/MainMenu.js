@@ -6,6 +6,7 @@ import Audio from "../audio/AudioController";
 import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
 import ballBounceAnimRun from "./ballBounceAnimation";
+import SnowStorm from "react-snowstorm";
 
 let animInterval;
 
@@ -26,6 +27,13 @@ function MainMenu() {
 
   return (
     <div className="main-menu-outer">
+      <SnowStorm
+        animationInterval={60}
+        flakesMax={10}
+        vMaxY={2}
+        vMaxX={2}
+        followMouse={false}
+      />
       <div className="MainMenu screen">
         <div id="mainMenuCoin" onClick={() => setShowCoinFlip(true)} />
 

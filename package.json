@@ -12,6 +12,7 @@
     "react-dom": "^16.8.6",
     "react-navi": "^0.13.3",
     "react-scripts": "3.0.1",
+    "react-snowstorm": "0.0.3",
     "react-spring": "^8.0.27",
     "uifx": "^1.0.8"
   },
