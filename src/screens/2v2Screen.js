@@ -3,7 +3,6 @@ import thefuckingplantImage from "../assets/images/xmastree.png";
 import "../App.scss";
 import Modal from "../components/Modal";
 import { Link } from "react-navi";
-import Audio from "../audio/AudioController";
 import Api from "../ApiMethods";
 import appSettings from "../appSettings";
 import { saveGameWon2v2 } from "../controllers/2v2Controller";
@@ -26,6 +25,41 @@ function TeamRandomizer() {
   useEffect(() => {
     getPlayers();
   }, []);
+
+  useEffect(() => {
+    const url = "ws://localhost:8080/";
+    const connection = new WebSocket(url);
+
+    connection.onopen = () => {
+      console.log("connection opened");
+    };
+
+    connection.onerror = error => {
+      console.log(`WebSocket error: ${JSON.stringify(error)}`);
+    };
+
+    connection.onmessage = e => {
+      console.log(e.data);
+    };
+
+    // setTimeout(() => {
+    //   flic();
+    // }, 5000);
+
+    return () => {
+      connection.onclose = () => {
+        console.log("disconnected");
+        // automatically try to reconnect on connection loss
+      };
+      connection.close();
+    };
+  }, []);
+
+  const flic = async () => {
+    console.log("flic posting");
+    let flicPost = await Api.post(appSettings.endpoints.FlicClick);
+    console.log(flicPost);
+  };
 
   useEffect(() => {
     if (PlayersSelected.length > 0) {
@@ -151,49 +185,37 @@ function TeamRandomizer() {
         </div>
       </div>
       <div className="flex-center-xy mt3">
-        {MatchInProgress =>
-          MatchInProgress
-            ? props => (
-                <div style={props}>
-                  <button
-                    className="btn btn-primary font-large"
-                    onMouseEnter={() => Audio.menuMove()}
-                    onClick={() => {
-                      Audio.menuSelect();
-                      randomizeTeams();
-                    }}
-                  >
-                    New Match
-                  </button>
-                </div>
-              )
-            : props => (
-                <div style={props}>
-                  <button
-                    className="btn btn-primary font-large"
-                    onMouseEnter={() => Audio.menuMove()}
-                    disabled={team1.length === 0}
-                    onClick={() => {
-                      Audio.menuSelect();
-                      AcceptTeams();
-                    }}
-                  >
-                    Begin Match
-                  </button>
-                  <button
-                    className="btn btn-link font-large"
-                    onMouseEnter={() => Audio.menuMove()}
-                    disabled={team1.length === 0}
-                    onClick={() => {
-                      Audio.menuSelect();
-                      randomizeTeams();
-                    }}
-                  >
-                    Randomize positions!
-                  </button>
-                </div>
-              )
-        }
+        {MatchInProgress ? (
+          <div>
+            <button
+              className="btn btn-primary font-large"
+              onClick={() => randomizeTeams()}
+            >
+              New Match
+            </button>
+          </div>
+        ) : (
+          <div>
+            <button
+              className="btn btn-primary font-large"
+              disabled={team1.length === 0}
+              onClick={() => AcceptTeams()}
+            >
+              Begin Match
+            </button>
+            <button
+              className="btn btn-link font-large"
+              onMouseEnter={() => Audio.menuMove()}
+              disabled={team1.length === 0}
+              onClick={() => {
+                Audio.menuSelect();
+                randomizeTeams();
+              }}
+            >
+              Randomize positions!
+            </button>
+          </div>
+        )}
       </div>
       <img
         width="150"

@@ -51,7 +51,10 @@ function ballBounceAnimRun() {
 
     var startAnim = function(e) {
       anim.set("to", {
-        curve: [[midSpot.x, midSpot.y], [endingSpot.x, endingSpot.y]] // Where 1 and 2 are curve control points, and 3 is the end point.
+        curve: [
+          [midSpot.x, midSpot.y],
+          [endingSpot.x, endingSpot.y]
+        ] // Where 1 and 2 are curve control points, and 3 is the end point.
       });
       if (ball) {
         anim.run();
@@ -60,7 +63,10 @@ function ballBounceAnimRun() {
 
     var startAnim2 = function(e) {
       anim2.set("to", {
-        curve: [[midSpot2.x, midSpot2.y], [endingSpot2.x, endingSpot2.y]] // Where 1 and 2 are curve control points, and 3 is the end point.
+        curve: [
+          [midSpot2.x, midSpot2.y],
+          [endingSpot2.x, endingSpot2.y]
+        ] // Where 1 and 2 are curve control points, and 3 is the end point.
       });
       if (ball) {
         anim2.run();
@@ -70,8 +76,6 @@ function ballBounceAnimRun() {
     var onEnd = function() {
       startAnim2();
     };
-
-    console.log("start anim");
     setToAnimStart();
     startAnim();
     anim.on("end", onEnd);

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../App.scss";
 import { Link } from "react-navi";
-import Audio from "../audio/AudioController";
 
 import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
@@ -34,13 +33,7 @@ function MainMenu() {
         <h1 className="white mt2">Choose game mode:</h1>
         <div className="main-menu-contents">
           <Link href="/2v2" direction="forward">
-            <button
-              onClick={() => Audio.menuSelect()}
-              onMouseEnter={() => Audio.menuMove()}
-              className="main-menu-btn"
-            >
-              2 vs 2
-            </button>
+            <button className="main-menu-btn">2 vs 2</button>
           </Link>
         </div>
 

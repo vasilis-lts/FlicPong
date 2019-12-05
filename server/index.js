@@ -1,9 +1,21 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-var fs = require("fs");
-var initSqlJs = require("./sql-wasm.js");
-var filebuffer = fs.readFileSync("server/db/pingpong.db");
+const fs = require("fs");
+const initSqlJs = require("./sql-wasm.js");
+const filebuffer = fs.readFileSync("server/db/pingpong.db");
+const WebSocket = require("ws");
+
+let socket;
+////////////////////////////////
+
+const wss = new WebSocket.Server({ port: 8080 });
+wss.on("connection", ws => {
+  console.log("Server socket open");
+  socket = ws;
+});
+
+///////////////////////////////
 
 const app = express();
 app.use(cors());
@@ -28,6 +40,13 @@ app.get("/Api/GetPlayers", (req, res) => {
     }
     db.close();
   });
+});
+
+app.post("/Api/FlicClick", function(req, res) {
+  const message = "Flic button pressed!";
+  res.setHeader("Content-Type", "application/json");
+  socket.send(message);
+  res.send({ message: "ok" });
 });
 
 // app.post("/Api/Save2v2Match", function(req, res) {
