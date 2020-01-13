@@ -19,9 +19,9 @@ wss.on("connection", ws => {
 ///////////////////////////////
 
 var app = express();
-app.listen(3001, "0.0.0.0", function() {
-  console.log("Listening to port:  " + 3001);
-});
+// app.listen(3001, "0.0.0.0", function() {
+//   console.log("Listening to port:  " + 3001);
+// });
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({ credentials: true, origin: true }));
