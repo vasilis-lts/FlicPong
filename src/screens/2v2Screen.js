@@ -24,11 +24,11 @@ function TeamRandomizer() {
 
   useEffect(() => {
     getPlayers();
-  }, []);
 
-  useEffect(() => {
     const url = "ws://localhost:8080/";
     const connection = new WebSocket(url);
+
+    console.log(connection);
 
     connection.onopen = () => {
       console.log("connection opened");
@@ -42,16 +42,17 @@ function TeamRandomizer() {
       console.log(e.data);
     };
 
-    // setTimeout(() => {
-    //   flic();
-    // }, 5000);
+    setTimeout(() => {
+      flic();
+    }, 5000);
 
     return () => {
+      connection.close();
+      console.log("Disconnecting...");
       connection.onclose = () => {
         console.log("disconnected");
         // automatically try to reconnect on connection loss
       };
-      connection.close();
     };
   }, []);
 

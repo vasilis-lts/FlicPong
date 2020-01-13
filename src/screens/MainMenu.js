@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../App.scss";
-import { Link } from "react-navi";
+import { Link, useNavigation } from "react-navi";
 
 import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
@@ -10,13 +10,38 @@ let animInterval;
 
 function MainMenu() {
   const [showCoinFlip, setShowCoinFlip] = useState(false);
+  let navigation = useNavigation();
 
   useEffect(() => {
     animInterval = setInterval(() => {
       ballBounceAnimRun();
     }, 20000);
 
+    const url = "ws://localhost:8080/";
+    const connection = new WebSocket(url);
+
+    console.log(connection);
+
+    connection.onopen = () => {
+      console.log("connection opened");
+    };
+
+    connection.onerror = error => {
+      console.log(`WebSocket error: ${JSON.stringify(error)}`);
+    };
+
+    connection.onmessage = e => {
+      navigation.navigate("/2v2");
+      console.log(e.data);
+    };
+
     return () => {
+      connection.close();
+      console.log("Disconnecting...");
+      connection.onclose = () => {
+        console.log("disconnected");
+        // automatically try to reconnect on connection loss
+      };
       clearInterval(animInterval);
     };
 
@@ -44,7 +69,6 @@ function MainMenu() {
         )}
       </div>
       <div id="ball"></div>
-      <div id="pingPongAnimationCanvas" />
     </div>
   );
 }

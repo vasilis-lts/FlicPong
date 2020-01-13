@@ -10,6 +10,7 @@ let socket;
 ////////////////////////////////
 
 const wss = new WebSocket.Server({ port: 8080 });
+
 wss.on("connection", ws => {
   console.log("Server socket open");
   socket = ws;
@@ -17,10 +18,13 @@ wss.on("connection", ws => {
 
 ///////////////////////////////
 
-const app = express();
-app.use(cors());
+var app = express();
+app.listen(3001, "0.0.0.0", function() {
+  console.log("Listening to port:  " + 3001);
+});
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({ credentials: true, origin: true }));
 
 app.get("/Api/GetPlayers", (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -46,7 +50,16 @@ app.post("/Api/FlicClick", function(req, res) {
   const message = "Flic button pressed!";
   res.setHeader("Content-Type", "application/json");
   socket.send(message);
-  res.send({ message: "ok" });
+  console.log(message);
+  res.send({ message });
+});
+
+app.get("/Api/FlicClick", function(req, res) {
+  const message = "Flic button pressed!";
+  res.setHeader("Content-Type", "application/json");
+  socket.send(message);
+  console.log(message);
+  res.send({ message });
 });
 
 // app.post("/Api/Save2v2Match", function(req, res) {
