@@ -21,46 +21,37 @@ function TeamRandomizer() {
   const [WinningTeam, setWinningTeam] = useState("");
   const [showPlayerSelection, setshowPlayerSelection] = useState(false);
   const [PlayersSelected, setPlayersSelected] = useState([]);
+  const [PlayerHovered, setPlayerHovered] = useState(0);
 
   useEffect(() => {
     getPlayers();
 
-    const url = "ws://localhost:8080/";
-    const connection = new WebSocket(url);
+    // const url = "ws://localhost:8080/";
+    // const connection = new WebSocket(url);
 
-    console.log(connection);
+    // console.log(connection);
 
-    connection.onopen = () => {
-      console.log("connection opened");
-    };
+    // connection.onopen = () => {
+    //   console.log("connection opened");
+    // };
 
-    connection.onerror = error => {
-      console.log(`WebSocket error: ${JSON.stringify(error)}`);
-    };
+    // connection.onerror = error => {
+    //   console.log(`WebSocket error: ${JSON.stringify(error)}`);
+    // };
 
-    connection.onmessage = e => {
-      console.log(e.data);
-    };
+    // connection.onmessage = e => {
+    //   console.log(e.data);
+    // };
 
-    setTimeout(() => {
-      flic();
-    }, 5000);
-
-    return () => {
-      connection.close();
-      console.log("Disconnecting...");
-      connection.onclose = () => {
-        console.log("disconnected");
-        // automatically try to reconnect on connection loss
-      };
-    };
+    // return () => {
+    //   connection.close();
+    //   console.log("Disconnecting...");
+    //   connection.onclose = () => {
+    //     console.log("disconnected");
+    //     // automatically try to reconnect on connection loss
+    //   };
+    // };
   }, []);
-
-  const flic = async () => {
-    console.log("flic posting");
-    let flicPost = await Api.post(appSettings.endpoints.FlicClick);
-    console.log(flicPost);
-  };
 
   useEffect(() => {
     if (PlayersSelected.length > 0) {
@@ -131,6 +122,11 @@ function TeamRandomizer() {
     setshowPlayerSelection(false);
   };
 
+  const incrementPlayerHovered = playerHovered => {
+    console.log(playerHovered);
+    setPlayerHovered(playerHovered);
+  };
+
   return (
     <div className="TeamRandomizer screen">
       <div className="flex space-b">
@@ -161,7 +157,7 @@ function TeamRandomizer() {
             <div className="players">
               {team1.length ? (
                 team1.map((player, index) => (
-                  <p key={index} className="box">
+                  <p key={index} className={`box`}>
                     {player.Name}
                   </p>
                 ))
@@ -245,6 +241,8 @@ function TeamRandomizer() {
             players={Players}
             playersAmount={4}
             onPlayersSelected={onPlayersSelected}
+            PlayerHovered={PlayerHovered}
+            incrementPlayerHovered={() => incrementPlayerHovered(PlayerHovered)}
           />
         </Modal>
       )}

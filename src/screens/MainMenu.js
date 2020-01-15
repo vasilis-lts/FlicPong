@@ -5,48 +5,76 @@ import { Link, useNavigation } from "react-navi";
 import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
 import ballBounceAnimRun from "./ballBounceAnimation";
+import useFlicSocket from "../hooks/useFlicSocket";
+import appSettings from "../appSettings";
 
 let animInterval;
 
 function MainMenu() {
+  const url = "ws://localhost:8080/";
+  const connection = new WebSocket(url);
+
   const [showCoinFlip, setShowCoinFlip] = useState(false);
+  const [FlicAction, setFlicAction] = useState("");
+  // const socketHook = useFlicSocket(SocketMessage);
   let navigation = useNavigation();
+  const [SocketMessage, setSocketMessage] = useState({});
+
+  const singlePress = () => {
+    console.log(showCoinFlip);
+    if (!showCoinFlip) {
+      navigation.navigate("/2v2");
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log(socketHook);
+  // }, [socketHook]);
 
   useEffect(() => {
     animInterval = setInterval(() => {
       ballBounceAnimRun();
     }, 20000);
 
-    const url = "ws://localhost:8080/";
-    const connection = new WebSocket(url);
+    // console.log(connection);
 
-    console.log(connection);
+    // connection.onopen = () => {
+    //   console.log("connection opened");
+    // };
 
-    connection.onopen = () => {
-      console.log("connection opened");
-    };
+    // connection.onerror = error => {
+    //   console.log(`WebSocket error: ${JSON.stringify(error)}`);
+    // };
 
-    connection.onerror = error => {
-      console.log(`WebSocket error: ${JSON.stringify(error)}`);
-    };
+    // connection.onmessage = e => {
+    //   console.log(e);
+    //   flicMessageHandler(JSON.parse(e.data));
+    // };
 
-    connection.onmessage = e => {
-      navigation.navigate("/2v2");
-      console.log(e.data);
-    };
-
-    return () => {
-      connection.close();
-      console.log("Disconnecting...");
-      connection.onclose = () => {
-        console.log("disconnected");
-        // automatically try to reconnect on connection loss
-      };
-      clearInterval(animInterval);
-    };
+    // return () => {
+    //   connection.close();
+    //   clearInterval(animInterval);
+    // };
 
     // eslint-disable-next-line
   }, []);
+
+  const flicMessageHandler = SocketMessage => {
+    switch (SocketMessage.buttonAction) {
+      case appSettings.ButtonActions.SinglePress:
+        singlePress();
+        break;
+      case appSettings.ButtonActions.Hold:
+        setShowCoinFlip(true);
+        break;
+      case appSettings.ButtonActions.DoublePress:
+        // nothing yet
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <div className="main-menu-outer">

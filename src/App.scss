@@ -415,46 +415,36 @@ button {
 
 // MAIN MENU TITLE ANIMATION
 
-.borderColorAnim {
-  animation: colorchange 20s;
-  animation-iteration-count: infinite;
+.color-border-toggle {
+  animation: color_change 0.25s infinite alternate;
 }
 
-@keyframes colorchange {
-  0% {
-    color: red;
+@keyframes color_change {
+  from {
+    border-color: $lightgreen;
   }
-  25% {
-    color: yellow;
-  }
-  50% {
-    color: blue;
-  }
-  75% {
-    color: green;
-  }
-  100% {
-    color: red;
+  to {
+    border-color: $green;
   }
 }
 
-@-webkit-keyframes colorchange /* Safari and Chrome - necessary duplicate */ {
-  0% {
-    color: red;
-  }
-  25% {
-    color: yellow;
-  }
-  50% {
-    color: blue;
-  }
-  75% {
-    color: green;
-  }
-  100% {
-    color: red;
-  }
-}
+// @-webkit-keyframes colorchange /* Safari and Chrome - necessary duplicate */ {
+//   0% {
+//     color: red;
+//   }
+//   25% {
+//     color: yellow;
+//   }
+//   50% {
+//     color: blue;
+//   }
+//   75% {
+//     color: green;
+//   }
+//   100% {
+//     color: red;
+//   }
+// }
 
 // BOUNCIN' BALL
 

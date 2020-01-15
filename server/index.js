@@ -18,6 +18,12 @@ wss.on("connection", ws => {
 
 ///////////////////////////////
 
+const ButtonActions = {
+  SinglePress: "SinglePress",
+  DoublePress: "DoublePress",
+  Hold: "Hold"
+};
+
 var app = express();
 // app.listen(3001, "0.0.0.0", function() {
 //   console.log("Listening to port:  " + 3001);
@@ -48,19 +54,49 @@ app.get("/Api/GetPlayers", (req, res) => {
 
 app.post("/Api/FlicClick", function(req, res) {
   const message = "Flic button pressed!";
+  const rb = req.body;
   res.setHeader("Content-Type", "application/json");
-  socket.send(message);
+  const responseBody = {
+    buttonId: rb.buttonId,
+    buttonAction: ButtonActions.SinglePress
+  };
+  console.log(responseBody);
+
+  socket.send(JSON.stringify(responseBody));
+});
+
+app.post("/Api/FlicDoubleClick", function(req, res) {
+  const message = "Flic button pressed!";
+  const rb = req.body;
+  res.setHeader("Content-Type", "application/json");
+  // socket.send(message);
+
+  console.log(rb);
   console.log(message);
   res.send({ message });
 });
 
-app.get("/Api/FlicClick", function(req, res) {
-  const message = "Flic button pressed!";
+app.post("/Api/FlicHold", function(req, res) {
+  const rb = req.body;
   res.setHeader("Content-Type", "application/json");
-  socket.send(message);
-  console.log(message);
-  res.send({ message });
+
+  const responseBody = {
+    buttonId: rb.buttonId,
+    buttonAction: ButtonActions.Hold
+  };
+  console.log(responseBody);
+
+  socket.send(JSON.stringify(responseBody));
+  // res.send(responseBody);
 });
+
+// app.get("/Api/FlicClick", function(req, res) {
+//   const message = "Flic button pressed!";
+//   res.setHeader("Content-Type", "application/json");
+//   socket.send(message);
+//   console.log(message);
+//   res.send({ message });
+// });
 
 // app.post("/Api/Save2v2Match", function(req, res) {
 //   const rb = req.body;

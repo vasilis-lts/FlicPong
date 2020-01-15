@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-navi";
+import appSettings from "../appSettings";
 
 export default function PlayerSelection(props) {
   const style = {
@@ -14,6 +15,67 @@ export default function PlayerSelection(props) {
   const [SelectedPlayers, setSelectedPlayers] = useState([]);
   const [CountryActive, setCountryActive] = useState("GR");
   const [ActivePlayersByCountry, setActivePlayersByCountry] = useState([]);
+  const [ActivePlayersAmount, setActivePlayersAmount] = useState(0);
+  const [PlayerHovered, setPlayerHovered] = useState(0);
+
+  const ActivePlayers = 6;
+
+  useEffect(() => {
+    initConnection();
+  }, []);
+
+  useEffect(() => {
+    console.log(ActivePlayersByCountry);
+    if (ActivePlayersByCountry.length) {
+      localStorage.setItem(
+        "ActivePlayers",
+        JSON.stringify(ActivePlayersByCountry)
+      );
+    }
+  }, [ActivePlayersByCountry]);
+
+  const initConnection = () => {
+    const url = "ws://localhost:8080/";
+    const connection = new WebSocket(url);
+    let counter = 0;
+
+    console.log(connection);
+
+    connection.onopen = () => {
+      console.log("connection opened");
+      localStorage.setItem("PlayerHovered", 0);
+    };
+
+    connection.onerror = error => {
+      console.log(`WebSocket error: ${JSON.stringify(error)}`);
+    };
+
+    connection.onmessage = e => {
+      const message = JSON.parse(e.data);
+
+      if (message.buttonAction === appSettings.ButtonActions.SinglePress) {
+        counter < ActivePlayers - 1 ? counter++ : (counter = 0);
+
+        localStorage.setItem("PlayerHovered", counter);
+        const _playerHovered = parseInt(
+          localStorage.getItem("PlayerHovered"),
+          10
+        );
+        setPlayerHovered(_playerHovered);
+      } else if (message.buttonAction === appSettings.ButtonActions.Hold) {
+        const activePlayers = JSON.parse(localStorage.getItem("ActivePlayers"));
+        // selectBoxClicked(activePlayers[counter].Id);
+        const elem = document.querySelector(
+          ".player-select-box.color-border-toggle"
+        );
+        elem.click();
+      }
+    };
+
+    return () => {
+      // connection.close();
+    };
+  };
 
   useEffect(() => {
     const playersActive = props.players.filter(player => {
@@ -22,6 +84,29 @@ export default function PlayerSelection(props) {
     setActivePlayersByCountry(playersActive);
     // eslint-disable-next-line
   }, [CountryActive]);
+
+  const flicMessageHandler = SocketMessage => {
+    switch (SocketMessage.buttonAction) {
+      case appSettings.ButtonActions.SinglePress:
+        singlePress();
+        break;
+      case appSettings.ButtonActions.Hold:
+        // setShowCoinFlip(true);
+        break;
+      case appSettings.ButtonActions.DoublePress:
+        // nothing yet
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const singlePress = () => {
+    if (PlayerHovered < ActivePlayers) {
+      // setPlayerHovered(PlayerHovered + 1);
+    }
+  };
 
   const isPlayerSelected = id => {
     const _selectedPlayers = [...SelectedPlayers];
@@ -41,7 +126,7 @@ export default function PlayerSelection(props) {
     return [playerSelected, i];
   };
 
-  function selectBoxClicked(e, playerId) {
+  function selectBoxClicked(playerId) {
     // id equals index in players list
 
     const _selectedPlayers = [...SelectedPlayers];
@@ -59,6 +144,9 @@ export default function PlayerSelection(props) {
         _selectedBoxes.push(clickedBox);
       }
     }
+
+    console.log(_selectedPlayers);
+    console.log(_selectedBoxes);
 
     setSelectedBoxes(_selectedBoxes);
     setSelectedPlayers(_selectedPlayers);
@@ -109,10 +197,11 @@ export default function PlayerSelection(props) {
           <div
             className={`player-select-box ${
               SelectedBoxes.includes(player.Id) ? "selected" : ""
-            }`}
+            } ${PlayerHovered === index ? "color-border-toggle" : ""}  `}
             key={player.Id}
             id={index}
-            onClick={e => selectBoxClicked(e, player.Id)}
+            // onMouseEnter={e => setPlayerHovered(index)}
+            onClick={e => selectBoxClicked(player.Id)}
           >
             {player.Name}
           </div>

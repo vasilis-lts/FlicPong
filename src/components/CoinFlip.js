@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import appSettings from "../appSettings";
 
 export default function CoinFlip(props) {
   const [CoinState, setCoinState] = useState("");
@@ -6,6 +7,45 @@ export default function CoinFlip(props) {
     "Choose Red or Black then click the Coin!"
   );
   const [CoinFlipped, setCoinFlipped] = useState(false);
+  const [SocketMessage, setSocketMessage] = useState({});
+
+  const url = "ws://localhost:8080/";
+  const connection = new WebSocket(url);
+
+  useEffect(() => {
+    console.log(SocketMessage);
+    switch (SocketMessage.buttonAction) {
+      case appSettings.ButtonActions.SinglePress:
+        flipCoin();
+        break;
+      case appSettings.ButtonActions.Hold:
+        break;
+      case appSettings.ButtonActions.DoublePress:
+        // nothing yet
+        break;
+
+      default:
+        break;
+    }
+  }, [SocketMessage]);
+
+  useEffect(() => {
+    console.log(connection);
+
+    connection.onopen = () => {
+      console.log("connection opened");
+    };
+
+    connection.onerror = error => {
+      console.log(`WebSocket error: ${JSON.stringify(error)}`);
+    };
+
+    connection.onmessage = e => {
+      setSocketMessage(JSON.parse(e.data));
+    };
+
+    // eslint-disable-next-line
+  }, []);
 
   function hideModal() {
     setTimeout(() => {
@@ -13,7 +53,7 @@ export default function CoinFlip(props) {
     }, 4000);
   }
 
-  const flipIt = () => {
+  const flipCoin = () => {
     if (!CoinFlipped) {
       var flipResult = Math.random();
       setCoinState("");
@@ -41,7 +81,7 @@ export default function CoinFlip(props) {
 
   return (
     <div className="coin-container">
-      <div id="coin" className={CoinState} onClick={() => flipIt()}>
+      <div id="coin" className={CoinState} onClick={() => flipCoin()}>
         <div className="side-a"></div>
         <div className="side-b"></div>
       </div>

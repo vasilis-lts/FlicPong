@@ -5,7 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 
 import { mount, redirect, route } from "navi";
 import { Router, View } from "react-navi";
-
+import { GameProvider } from "./context/GameContext";
 import Layout from "./Layout";
 
 const routes = mount({
@@ -22,13 +22,15 @@ const routes = mount({
 });
 
 ReactDOM.render(
-  <Router routes={routes}>
-    <Layout>
-      <Suspense fallback={null}>
-        <View />
-      </Suspense>
-    </Layout>
-  </Router>,
+  <GameProvider>
+    <Router routes={routes}>
+      <Layout>
+        <Suspense fallback={null}>
+          <View />
+        </Suspense>
+      </Layout>
+    </Router>
+  </GameProvider>,
 
   document.getElementById("root")
 );
