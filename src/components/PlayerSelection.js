@@ -22,6 +22,12 @@ export default function PlayerSelection(props) {
 
   useEffect(() => {
     initConnection();
+
+    return () => {
+      console.log("Unmounting Player select");
+      props.init2v2SocketConnection();
+      // connection.close();
+    };
   }, []);
 
   useEffect(() => {
@@ -69,6 +75,13 @@ export default function PlayerSelection(props) {
           ".player-select-box.color-border-toggle"
         );
         elem.click();
+      } else if (
+        message.buttonAction === appSettings.ButtonActions.DoublePress
+      ) {
+        const confirmBtn = document.getElementById("confirmPlayersBtn");
+        if (confirmBtn) {
+          confirmBtn.click();
+        }
       }
     };
 
@@ -184,6 +197,7 @@ export default function PlayerSelection(props) {
             //   SelectedPlayers.length !== 0 ? "more" : ""
             // } player${SelectedPlayers.length < 3 ? "s" : ""} `
             <button
+              id="confirmPlayersBtn"
               className="btn btn-primary"
               onClick={() => props.onPlayersSelected(SelectedPlayers)}
             >

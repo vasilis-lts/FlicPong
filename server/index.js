@@ -66,14 +66,17 @@ app.post("/Api/FlicClick", function(req, res) {
 });
 
 app.post("/Api/FlicDoubleClick", function(req, res) {
-  const message = "Flic button pressed!";
+  const message = "Flic button double pressed!";
   const rb = req.body;
   res.setHeader("Content-Type", "application/json");
-  // socket.send(message);
 
-  console.log(rb);
-  console.log(message);
-  res.send({ message });
+  const responseBody = {
+    buttonId: rb.buttonId,
+    buttonAction: ButtonActions.DoublePress
+  };
+  console.log(responseBody);
+
+  socket.send(JSON.stringify(responseBody));
 });
 
 app.post("/Api/FlicHold", function(req, res) {

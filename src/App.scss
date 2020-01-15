@@ -105,6 +105,13 @@ button {
   color: $black;
   font-size: 1.2rem;
   display: block;
+  p {
+    cursor: pointer;
+    color: $black;
+    font-size: 1.2rem;
+    display: block;
+    margin: 0;
+  }
 }
 .nav-link:hover {
   color: lighten($black, 15%);

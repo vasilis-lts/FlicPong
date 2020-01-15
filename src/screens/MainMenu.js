@@ -36,25 +36,24 @@ function MainMenu() {
       ballBounceAnimRun();
     }, 20000);
 
-    // console.log(connection);
+    console.log(connection);
 
-    // connection.onopen = () => {
-    //   console.log("connection opened");
-    // };
+    connection.onopen = () => {
+      console.log("connection opened");
+    };
 
-    // connection.onerror = error => {
-    //   console.log(`WebSocket error: ${JSON.stringify(error)}`);
-    // };
+    connection.onerror = error => {
+      console.log(`WebSocket error: ${JSON.stringify(error)}`);
+    };
 
-    // connection.onmessage = e => {
-    //   console.log(e);
-    //   flicMessageHandler(JSON.parse(e.data));
-    // };
+    connection.onmessage = e => {
+      flicMessageHandler(JSON.parse(e.data));
+    };
 
-    // return () => {
-    //   connection.close();
-    //   clearInterval(animInterval);
-    // };
+    return () => {
+      connection.close();
+      clearInterval(animInterval);
+    };
 
     // eslint-disable-next-line
   }, []);

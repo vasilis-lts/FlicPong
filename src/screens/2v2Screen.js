@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import thefuckingplantImage from "../assets/images/xmastree.png";
+import thefuckingplantImage from "../assets/images/the_fucking_plant.png";
 import "../App.scss";
 import Modal from "../components/Modal";
-import { Link } from "react-navi";
+import { Link, useNavigation } from "react-navi";
 import Api from "../ApiMethods";
 import appSettings from "../appSettings";
 import { saveGameWon2v2 } from "../controllers/2v2Controller";
@@ -22,36 +22,40 @@ function TeamRandomizer() {
   const [showPlayerSelection, setshowPlayerSelection] = useState(false);
   const [PlayersSelected, setPlayersSelected] = useState([]);
   const [PlayerHovered, setPlayerHovered] = useState(0);
+  const navigation = useNavigation();
 
   useEffect(() => {
     getPlayers();
-
-    // const url = "ws://localhost:8080/";
-    // const connection = new WebSocket(url);
-
-    // console.log(connection);
-
-    // connection.onopen = () => {
-    //   console.log("connection opened");
-    // };
-
-    // connection.onerror = error => {
-    //   console.log(`WebSocket error: ${JSON.stringify(error)}`);
-    // };
-
-    // connection.onmessage = e => {
-    //   console.log(e.data);
-    // };
-
-    // return () => {
-    //   connection.close();
-    //   console.log("Disconnecting...");
-    //   connection.onclose = () => {
-    //     console.log("disconnected");
-    //     // automatically try to reconnect on connection loss
-    //   };
-    // };
   }, []);
+
+  const initSocketConnection = () => {
+    const url = "ws://localhost:8080/";
+    const connection = new WebSocket(url);
+
+    console.log(connection);
+
+    connection.onopen = () => {
+      console.log("connection opened");
+    };
+
+    connection.onerror = error => {
+      console.log(`WebSocket error: ${JSON.stringify(error)}`);
+    };
+
+    connection.onmessage = e => {
+      console.log(e.data);
+      flicMessageHandler(JSON.parse(e.data));
+    };
+
+    return () => {
+      connection.close();
+      console.log("Disconnecting...");
+      connection.onclose = () => {
+        console.log("disconnected");
+        // automatically try to reconnect on connection loss
+      };
+    };
+  };
 
   useEffect(() => {
     if (PlayersSelected.length > 0) {
@@ -59,6 +63,29 @@ function TeamRandomizer() {
     }
     // eslint-disable-next-line
   }, [PlayersSelected]);
+
+  const flicMessageHandler = SocketMessage => {
+    switch (SocketMessage.buttonAction) {
+      case appSettings.ButtonActions.SinglePress:
+        singlePress();
+        break;
+      case appSettings.ButtonActions.Hold:
+        navigation.navigate("/main-menu");
+        // setShowCoinFlip(true);
+        break;
+      case appSettings.ButtonActions.DoublePress:
+        // nothing yet
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const singlePress = () => {
+    const backBtn = document.getElementById("backBtn");
+    backBtn.click();
+  };
 
   const getPlayers = async () => {
     const players = await Api.get(appSettings.endpoints.GetPlayers);
@@ -131,11 +158,11 @@ function TeamRandomizer() {
     <div className="TeamRandomizer screen">
       <div className="flex space-b">
         <Link href="/main" className="nav-link main-menu-link mt1">
-          {`<- Back to main menu`}
+          <p id="backBtn">{`<- Back to main menu`}</p>
         </Link>
-        <h3 className="mt1 btn-link" onClick={() => setShowCoinFlip(true)}>
+        {/* <h3 className="mt1 btn-link" onClick={() => setShowCoinFlip(true)}>
           Coin
-        </h3>
+        </h3> */}
       </div>
       <div className="flex">
         <div
@@ -242,7 +269,7 @@ function TeamRandomizer() {
             playersAmount={4}
             onPlayersSelected={onPlayersSelected}
             PlayerHovered={PlayerHovered}
-            incrementPlayerHovered={() => incrementPlayerHovered(PlayerHovered)}
+            init2v2SocketConnection={initSocketConnection}
           />
         </Modal>
       )}
