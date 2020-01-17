@@ -27,6 +27,7 @@ export default function CoinFlip(props) {
       default:
         break;
     }
+    // eslint-disable-next-line
   }, [SocketMessage]);
 
   useEffect(() => {

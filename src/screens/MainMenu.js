@@ -5,7 +5,6 @@ import { Link, useNavigation } from "react-navi";
 import Modal from "../components/Modal";
 import CoinFlip from "../components/CoinFlip";
 import ballBounceAnimRun from "./ballBounceAnimation";
-import useFlicSocket from "../hooks/useFlicSocket";
 import appSettings from "../appSettings";
 
 let animInterval;
@@ -15,10 +14,7 @@ function MainMenu() {
   const connection = new WebSocket(url);
 
   const [showCoinFlip, setShowCoinFlip] = useState(false);
-  const [FlicAction, setFlicAction] = useState("");
-  // const socketHook = useFlicSocket(SocketMessage);
   let navigation = useNavigation();
-  const [SocketMessage, setSocketMessage] = useState({});
 
   const singlePress = () => {
     console.log(showCoinFlip);

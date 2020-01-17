@@ -82,6 +82,9 @@ button {
 .font-large {
   font-size: 2vw;
 }
+.hidden {
+  display: none;
+}
 .main-menu-btn {
   font-size: 4vw;
   background: $black;
@@ -99,6 +102,9 @@ button {
 }
 .sb {
   justify-content: space-between;
+}
+.text-center {
+  text-align: center;
 }
 .nav-link {
   cursor: pointer;
@@ -237,7 +243,7 @@ button {
       width: 50%;
       padding: 0 1rem;
     }
-    #team1 {
+    .border-right-white {
       border-right: 1px solid $white;
     }
 
@@ -388,6 +394,23 @@ button {
   -moz-animation: flipTails 3s ease-out forwards;
   -o-animation: flipTails 3s ease-out forwards;
   animation: flipTails 3s ease-out forwards;
+}
+
+.TableScreen {
+  .score-title {
+    margin: 0;
+    margin-top: 1rem;
+  }
+  .score-numbers {
+    margin: 0 2rem;
+    margin-bottom: 1rem;
+    font-size: 6rem;
+    line-height: 6rem;
+  }
+  .set-numbers {
+    font-size: 2rem;
+    line-height: 2rem;
+  }
 }
 
 @keyframes flipHeads {

@@ -15,7 +15,6 @@ export default function PlayerSelection(props) {
   const [SelectedPlayers, setSelectedPlayers] = useState([]);
   const [CountryActive, setCountryActive] = useState("GR");
   const [ActivePlayersByCountry, setActivePlayersByCountry] = useState([]);
-  const [ActivePlayersAmount, setActivePlayersAmount] = useState(0);
   const [PlayerHovered, setPlayerHovered] = useState(0);
 
   const ActivePlayers = 6;
@@ -25,13 +24,14 @@ export default function PlayerSelection(props) {
 
     return () => {
       console.log("Unmounting Player select");
+
       props.init2v2SocketConnection();
       // connection.close();
     };
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    console.log(ActivePlayersByCountry);
     if (ActivePlayersByCountry.length) {
       localStorage.setItem(
         "ActivePlayers",
@@ -45,10 +45,7 @@ export default function PlayerSelection(props) {
     const connection = new WebSocket(url);
     let counter = 0;
 
-    console.log(connection);
-
     connection.onopen = () => {
-      console.log("connection opened");
       localStorage.setItem("PlayerHovered", 0);
     };
 
@@ -69,7 +66,6 @@ export default function PlayerSelection(props) {
         );
         setPlayerHovered(_playerHovered);
       } else if (message.buttonAction === appSettings.ButtonActions.Hold) {
-        const activePlayers = JSON.parse(localStorage.getItem("ActivePlayers"));
         // selectBoxClicked(activePlayers[counter].Id);
         const elem = document.querySelector(
           ".player-select-box.color-border-toggle"
@@ -98,28 +94,28 @@ export default function PlayerSelection(props) {
     // eslint-disable-next-line
   }, [CountryActive]);
 
-  const flicMessageHandler = SocketMessage => {
-    switch (SocketMessage.buttonAction) {
-      case appSettings.ButtonActions.SinglePress:
-        singlePress();
-        break;
-      case appSettings.ButtonActions.Hold:
-        // setShowCoinFlip(true);
-        break;
-      case appSettings.ButtonActions.DoublePress:
-        // nothing yet
-        break;
+  // const flicMessageHandler = SocketMessage => {
+  //   switch (SocketMessage.buttonAction) {
+  //     case appSettings.ButtonActions.SinglePress:
+  //       singlePress();
+  //       break;
+  //     case appSettings.ButtonActions.Hold:
+  //       // setShowCoinFlip(true);
+  //       break;
+  //     case appSettings.ButtonActions.DoublePress:
+  //       // nothing yet
+  //       break;
 
-      default:
-        break;
-    }
-  };
+  //     default:
+  //       break;
+  //   }
+  // };
 
-  const singlePress = () => {
-    if (PlayerHovered < ActivePlayers) {
-      // setPlayerHovered(PlayerHovered + 1);
-    }
-  };
+  // const singlePress = () => {
+  //   if (PlayerHovered < ActivePlayers) {
+  //     // setPlayerHovered(PlayerHovered + 1);
+  //   }
+  // };
 
   const isPlayerSelected = id => {
     const _selectedPlayers = [...SelectedPlayers];
@@ -157,9 +153,6 @@ export default function PlayerSelection(props) {
         _selectedBoxes.push(clickedBox);
       }
     }
-
-    console.log(_selectedPlayers);
-    console.log(_selectedBoxes);
 
     setSelectedBoxes(_selectedBoxes);
     setSelectedPlayers(_selectedPlayers);
