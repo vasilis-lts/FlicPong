@@ -179,7 +179,7 @@ function TeamRandomizer() {
 
         team === "Team1" ? setTeamLeftScore(score) : setTeamRightScore(score);
 
-        if (score >= 3) {
+        if (score >= 21) {
           const setsWon = increaseSetsWon(team);
           team === "Team1"
             ? setSetsWonTeam1(setsWon)
@@ -203,7 +203,7 @@ function TeamRandomizer() {
 
             setTimeout(() => {
               changeSet();
-            }, 5000);
+            }, 10000);
           }
         }
       }
@@ -223,7 +223,7 @@ function TeamRandomizer() {
     setTimeout(() => {
       setAfterSetModal(false);
       navigation.navigate("/main-menu");
-    }, 5000);
+    }, 10000);
   };
 
   const changeSet = () => {
