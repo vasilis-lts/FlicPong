@@ -36,15 +36,16 @@ function TeamRandomizer() {
     PlayerHovered
     //  setPlayerHovered
   ] = useState(0);
-  const [ScoreTeam1, setScoreTeam1] = useState(0);
-  const [ScoreTeam2, setScoreTeam2] = useState(0);
   const [SetsWonTeam1, setSetsWonTeam1] = useState(0);
   const [SetsWonTeam2, setSetsWonTeam2] = useState(0);
   const [SetNumber, setSetNumber] = useState(1);
   const [TeamLeftScore, setTeamLeftScore] = useState(0);
   const [TeamRightScore, setTeamRightScore] = useState(0);
-  const [TeamLeftSets, setTeamLeftSets] = useState(0);
-  const [TeamRightSets, setTeamRightSets] = useState(0);
+  const [AfterSetModal, setAfterSetModal] = useState(false);
+  const [AfterSetModalText, setAfterSetModalText] = useState(
+    "Set over change positions!"
+  );
+  const [canIncrementScore, setcanIncrementScore] = useState(true);
 
   const navigation = useNavigation();
 
@@ -56,10 +57,8 @@ function TeamRandomizer() {
     const url = "ws://localhost:8080/";
     const connection = new WebSocket(url);
 
-    console.log(connection);
-
     connection.onopen = () => {
-      console.log("connection opened");
+      // console.log("connection opened");
     };
 
     connection.onerror = error => {
@@ -93,7 +92,6 @@ function TeamRandomizer() {
   }, [PlayersSelected]);
 
   const initScore = () => {
-    console.log("Initializing score...");
     let scoreTeam1, scoreTeam2;
     // if (localStorage.getItem("MatchInProgress") === "true") {
     // scoreTeam1 = localStorage.getItem("ScoreTeam1");
@@ -113,12 +111,13 @@ function TeamRandomizer() {
     localStorage.setItem("SetsWonTeam2", 0);
     localStorage.setItem("SetNumber", 1);
     localStorage.setItem("Team1Position", "Left");
-    // }
+    localStorage.setItem("CanIncrementScore", true);
 
-    setTeamLeftSets(0);
-    setTeamRightSets(0);
-    setScoreTeam1(scoreTeam1);
-    setScoreTeam2(scoreTeam2);
+    setSetsWonTeam1(0);
+    setSetsWonTeam2(0);
+    setTeamLeftScore(0);
+    setTeamRightScore(0);
+    // }
 
     // init SetNumber
     if (localStorage.getItem("SetNumber")) {
@@ -136,7 +135,7 @@ function TeamRandomizer() {
         singlePress(SocketMessage);
         break;
       case appSettings.ButtonActions.Hold:
-        navigation.navigate("/main-menu");
+        buttonHold(SocketMessage);
         // setShowCoinFlip(true);
         break;
       case appSettings.ButtonActions.DoublePress:
@@ -152,11 +151,9 @@ function TeamRandomizer() {
     if (localStorage.getItem("MatchInProgress") === "true") {
       const setNumber = localStorage.getItem("SetNumber");
       //
-      console.log(buttonMessage);
       if (buttonMessage.buttonId.indexOf("TeamLeft") > -1) {
-        console.log("test1");
         setNumber % 2 === 0 ? incrementScore("Team2") : incrementScore("Team1");
-      } else {
+      } else if (buttonMessage.buttonId.indexOf("TeamRight") > -1) {
         setNumber % 2 === 0 ? incrementScore("Team1") : incrementScore("Team2");
       }
     } else {
@@ -165,32 +162,71 @@ function TeamRandomizer() {
     }
   };
 
-  const incrementScore = team => {
-    console.log(team);
-    let score = localStorage.getItem("Score" + team);
-    score++;
-    localStorage.setItem("Score" + team, score);
-    setScoreTeam1(score);
-
-    console.log(score);
-
-    team === "Team1" ? setTeamLeftScore(score) : setTeamRightScore(score);
-
-    if (score >= 3) {
-      const setsWon = increaseSetsWon(team);
-      console.log(setsWon);
-      team === "Team1" ? setSetsWonTeam1(setsWon) : setSetsWonTeam2(setsWon);
-
-      setTimeout(() => {
-        console.log("Set over change positions!");
-        changeSet();
-      }, 3000);
+  const buttonHold = buttonMessage => {
+    if (localStorage.getItem("MatchInProgress") === "true") {
+      initScore();
+    } else {
+      navigation.navigate("/main-menu");
     }
   };
 
-  const changeSet = () => {
-    console.log("changeSet");
+  const incrementScore = team => {
+    if (localStorage.getItem("CanIncrementScore") === "true") {
+      if (canIncrementScore) {
+        let score = localStorage.getItem("Score" + team);
+        score++;
+        localStorage.setItem("Score" + team, score);
 
+        team === "Team1" ? setTeamLeftScore(score) : setTeamRightScore(score);
+
+        if (score >= 3) {
+          const setsWon = increaseSetsWon(team);
+          team === "Team1"
+            ? setSetsWonTeam1(setsWon)
+            : setSetsWonTeam2(setsWon);
+
+          const setsWonTeam1 = parseInt(
+            localStorage.getItem("SetsWonTeam1"),
+            10
+          );
+          const setsWonTeam2 = parseInt(
+            localStorage.getItem("SetsWonTeam2"),
+            10
+          );
+
+          localStorage.setItem("CanIncrementScore", false);
+          if (setsWonTeam1 === MaxSets - 1 || setsWonTeam2 === MaxSets - 1) {
+            finishMatch(team);
+          } else {
+            setAfterSetModal(true);
+            setcanIncrementScore(false);
+
+            setTimeout(() => {
+              changeSet();
+            }, 5000);
+          }
+        }
+      }
+    }
+  };
+
+  const finishMatch = teamWon => {
+    setAfterSetModal(true);
+
+    let modalText;
+
+    const winningPlayers = [...JSON.parse(localStorage.getItem(teamWon))];
+
+    modalText = `${winningPlayers[0].Name} and ${winningPlayers[1].Name} win!`;
+
+    setAfterSetModalText(`${modalText}`);
+    setTimeout(() => {
+      setAfterSetModal(false);
+      navigation.navigate("/main-menu");
+    }, 5000);
+  };
+
+  const changeSet = () => {
     resetScore();
 
     let setNumber = localStorage.getItem("SetNumber");
@@ -202,15 +238,14 @@ function TeamRandomizer() {
       setNumber++;
       setSetNumber(setNumber);
       localStorage.setItem("SetNumber", setNumber);
-    } else {
-      console.log("Match Over!");
     }
+    setcanIncrementScore(true);
+    setAfterSetModal(false);
+    localStorage.setItem("CanIncrementScore", true);
   };
 
   const resetScore = () => {
     clearScore();
-    setScoreTeam1(0);
-    setScoreTeam2(0);
     setTeamLeftScore(0);
     setTeamRightScore(0);
   };
@@ -246,6 +281,9 @@ function TeamRandomizer() {
 
         setTeam1(team1);
         setTeam2(team2);
+
+        localStorage.setItem("Team1", JSON.stringify(team1));
+        localStorage.setItem("Team2", JSON.stringify(team2));
       }, 2000);
     }
   };
@@ -430,6 +468,11 @@ function TeamRandomizer() {
             PlayerHovered={PlayerHovered}
             init2v2SocketConnection={initSocketConnection}
           />
+        </Modal>
+      )}
+      {AfterSetModal && (
+        <Modal>
+          <div>{AfterSetModalText}</div>
         </Modal>
       )}
     </div>

@@ -17,15 +17,10 @@ function MainMenu() {
   let navigation = useNavigation();
 
   const singlePress = () => {
-    console.log(showCoinFlip);
     if (!showCoinFlip) {
       navigation.navigate("/2v2");
     }
   };
-
-  // useEffect(() => {
-  //   console.log(socketHook);
-  // }, [socketHook]);
 
   useEffect(() => {
     animInterval = setInterval(() => {
@@ -35,7 +30,7 @@ function MainMenu() {
     console.log(connection);
 
     connection.onopen = () => {
-      console.log("connection opened");
+      // console.log("connection opened");
     };
 
     connection.onerror = error => {

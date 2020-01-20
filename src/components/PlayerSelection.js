@@ -23,8 +23,6 @@ export default function PlayerSelection(props) {
     initConnection();
 
     return () => {
-      console.log("Unmounting Player select");
-
       props.init2v2SocketConnection();
       // connection.close();
     };
