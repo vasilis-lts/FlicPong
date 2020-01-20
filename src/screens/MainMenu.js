@@ -73,7 +73,7 @@ function MainMenu() {
 
         <h2 className={`main-title`}>Ping Pong!</h2>
 
-        <h1 className="white mt2">Choose game mode:</h1>
+        <h1 className="white mt2">Press a button to play</h1>
         <div className="main-menu-contents">
           <Link href="/2v2" direction="forward">
             <button className="main-menu-btn">2 vs 2</button>

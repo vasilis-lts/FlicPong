@@ -67,6 +67,10 @@ button {
   border-color: lighten($blue, 15%);
   background: lighten($blue, 15%);
 }
+.btn-help-text {
+  font-size: 1rem;
+  color: $blue;
+}
 .flex {
   display: flex;
 }
@@ -105,6 +109,9 @@ button {
 }
 .text-center {
   text-align: center;
+}
+.text-right {
+  text-align: right !important;
 }
 .nav-link {
   cursor: pointer;
@@ -284,6 +291,16 @@ button {
   border: 4px solid $blue;
   font-size: 6vw;
 }
+.player-select-header {
+  h1,
+  h3 {
+    margin: 0;
+    text-align: left;
+  }
+}
+.player-select-box-container {
+  margin-top: 2rem;
+}
 .player-select-box {
   display: flex;
   font-size: 2.3vw;
@@ -328,6 +345,11 @@ button {
 .country-selection.highlighted-country:hover {
   background: lighten($black, 25);
   color: $green;
+}
+#confirmPlayersBtn {
+  h3 {
+    font-size: 1.2rem;
+  }
 }
 
 // Coin Flip
@@ -400,12 +422,13 @@ button {
   .score-title {
     margin: 0;
     margin-top: 1rem;
+    font-size: 3rem;
   }
   .score-numbers {
     margin: 0 2rem;
     margin-bottom: 1rem;
-    font-size: 6rem;
-    line-height: 6rem;
+    font-size: 7rem;
+    line-height: 7rem;
   }
   .set-numbers {
     font-size: 2rem;

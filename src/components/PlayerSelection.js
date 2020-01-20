@@ -13,7 +13,10 @@ export default function PlayerSelection(props) {
 
   const [SelectedBoxes, setSelectedBoxes] = useState([]);
   const [SelectedPlayers, setSelectedPlayers] = useState([]);
-  const [CountryActive, setCountryActive] = useState("GR");
+  const [
+    CountryActive
+    //  setCountryActive
+  ] = useState("GR");
   const [ActivePlayersByCountry, setActivePlayersByCountry] = useState([]);
   const [PlayerHovered, setPlayerHovered] = useState(0);
 
@@ -158,10 +161,15 @@ export default function PlayerSelection(props) {
 
   return (
     <div>
-      <div className="flex sb">
-        <div className="flex">
-          <h1>Players select!</h1>
-          <h3
+      <div className="flex sb player-select-header">
+        <div className="flex ">
+          <div>
+            <h1>Player select!</h1>
+            <h3 className="btn-help-text">
+              Single press to move / Hold to select,deselect
+            </h3>
+          </div>
+          {/* <h3
             className={`country-selection ${
               CountryActive === "GR" ? "highlighted-country" : ""
             }`}
@@ -176,28 +184,29 @@ export default function PlayerSelection(props) {
             onClick={() => setCountryActive("NL")}
           >
             NL
-          </h3>
+          </h3> */}
         </div>
-        <h3>
-          {SelectedPlayers.length <= props.playersAmount - 1 ? (
+        {SelectedPlayers.length <= props.playersAmount - 1 ? (
+          <div>
             <Link href="/main-menu" direction="forward">
-              <h3 className="m0">Back to main menu</h3>
+              <h1 className="m0">Back to main menu</h1>
             </Link>
-          ) : (
-            // `Select ${4 - SelectedPlayers.length} ${
-            //   SelectedPlayers.length !== 0 ? "more" : ""
-            // } player${SelectedPlayers.length < 3 ? "s" : ""} `
-            <button
-              id="confirmPlayersBtn"
-              className="btn btn-primary"
-              onClick={() => props.onPlayersSelected(SelectedPlayers)}
-            >
-              <h3 className="m0">Confirm Players?</h3>
-            </button>
-          )}
-        </h3>
+            <h3 className="btn-help-text text-right">(Hold Button)</h3>
+          </div>
+        ) : (
+          // `Select ${4 - SelectedPlayers.length} ${
+          //   SelectedPlayers.length !== 0 ? "more" : ""
+          // } player${SelectedPlayers.length < 3 ? "s" : ""} `
+          <button
+            id="confirmPlayersBtn"
+            className="btn btn-primary"
+            onClick={() => props.onPlayersSelected(SelectedPlayers)}
+          >
+            <h3 className="m0">Double Press to confirm players!</h3>
+          </button>
+        )}
       </div>
-      <div className="flex">
+      <div className="flex player-select-box-container ">
         {ActivePlayersByCountry.map((player, index) => (
           <div
             className={`player-select-box ${

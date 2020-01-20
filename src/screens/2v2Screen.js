@@ -17,7 +17,11 @@ function TeamRandomizer() {
 
   const [team1, setTeam1] = useState([]);
   const [team2, setTeam2] = useState([]);
-  const [MatchInProgress, setMatchInProgress] = useState(false);
+  const [
+    ,
+    // MatchInProgress
+    setMatchInProgress
+  ] = useState(false);
   // eslint-disable-next-line
   // const [MatchData, setMatchData] = useState({});
   const [Players, setPlayers] = useState([]);
@@ -43,7 +47,7 @@ function TeamRandomizer() {
   const [TeamRightScore, setTeamRightScore] = useState(0);
   const [AfterSetModal, setAfterSetModal] = useState(false);
   const [AfterSetModalText, setAfterSetModalText] = useState(
-    "Set over change positions!"
+    "Next set! Switch sides!"
   );
   const [canIncrementScore, setcanIncrementScore] = useState(true);
 
@@ -288,10 +292,10 @@ function TeamRandomizer() {
     }
   };
 
-  const BeginMatch = () => {
-    setMatchInProgress(true);
-    localStorage.setItem("MatchInProgress", true);
-  };
+  // const BeginMatch = () => {
+  //   setMatchInProgress(true);
+  //   localStorage.setItem("MatchInProgress", true);
+  // };
 
   // const game2v2Win = (teamName, winningTeam) => {
   //   console.log("test" + teamName);
@@ -406,7 +410,7 @@ function TeamRandomizer() {
           )}
         </div>
       </div>
-      <div className="flex-center-xy mt1">
+      {/* <div className="flex-center-xy mt1">
         {MatchInProgress ? (
           <div>
             <button
@@ -437,7 +441,7 @@ function TeamRandomizer() {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
       <img
         width="150"
         src={thefuckingplantImage}
