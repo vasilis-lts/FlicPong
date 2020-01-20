@@ -17,11 +17,7 @@ function TeamRandomizer() {
 
   const [team1, setTeam1] = useState([]);
   const [team2, setTeam2] = useState([]);
-  const [
-    ,
-    // MatchInProgress
-    setMatchInProgress
-  ] = useState(false);
+  const [MatchInProgress, setMatchInProgress] = useState(false);
   // eslint-disable-next-line
   // const [MatchData, setMatchData] = useState({});
   const [Players, setPlayers] = useState([]);
@@ -63,6 +59,7 @@ function TeamRandomizer() {
 
     connection.onopen = () => {
       // console.log("connection opened");
+      console.log("MatchInProgress:" + MatchInProgress);
     };
 
     connection.onerror = error => {
@@ -73,7 +70,7 @@ function TeamRandomizer() {
       flicMessageHandler(JSON.parse(e.data));
     };
 
-    initScore();
+    initGame();
 
     return () => {
       connection.close();
@@ -95,7 +92,7 @@ function TeamRandomizer() {
     // eslint-disable-next-line
   }, [PlayersSelected]);
 
-  const initScore = () => {
+  const initGame = () => {
     let scoreTeam1, scoreTeam2;
     // if (localStorage.getItem("MatchInProgress") === "true") {
     // scoreTeam1 = localStorage.getItem("ScoreTeam1");
@@ -116,6 +113,8 @@ function TeamRandomizer() {
     localStorage.setItem("SetNumber", 1);
     localStorage.setItem("Team1Position", "Left");
     localStorage.setItem("CanIncrementScore", true);
+
+    localStorage.setItem("WinningScore", 21);
 
     setSetsWonTeam1(0);
     setSetsWonTeam2(0);
@@ -168,7 +167,7 @@ function TeamRandomizer() {
 
   const buttonHold = buttonMessage => {
     if (localStorage.getItem("MatchInProgress") === "true") {
-      initScore();
+      initGame();
     } else {
       navigation.navigate("/main-menu");
     }
@@ -183,7 +182,20 @@ function TeamRandomizer() {
 
         team === "Team1" ? setTeamLeftScore(score) : setTeamRightScore(score);
 
-        if (score >= 21) {
+        const scoreTeam1 = parseInt(localStorage.getItem("ScoreTeam1"), 10);
+        const scoreTeam2 = parseInt(localStorage.getItem("ScoreTeam2"), 10);
+
+        let winningScore = parseInt(localStorage.getItem("WinningScore"));
+
+        if (
+          scoreTeam1 === winningScore - 1 &&
+          scoreTeam2 === winningScore - 1
+        ) {
+          winningScore++;
+          localStorage.setItem("WinningScore", winningScore);
+        }
+
+        if (score >= winningScore) {
           const setsWon = increaseSetsWon(team);
           team === "Team1"
             ? setSetsWonTeam1(setsWon)
