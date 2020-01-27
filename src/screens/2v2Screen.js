@@ -264,6 +264,7 @@ function TeamRandomizer() {
     clearScore();
     setTeamLeftScore(0);
     setTeamRightScore(0);
+    localStorage.setItem("WinningScore", 21);
   };
 
   const getPlayers = async () => {
