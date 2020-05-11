@@ -20,7 +20,7 @@ export default function PlayerSelection(props) {
   const [ActivePlayersByCountry, setActivePlayersByCountry] = useState([]);
   const [PlayerHovered, setPlayerHovered] = useState(0);
 
-  const ActivePlayers = 6;
+  const ActivePlayers = 7;
 
   useEffect(() => {
     initConnection();
