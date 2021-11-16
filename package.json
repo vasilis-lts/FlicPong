@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.5.4",
-    "aws-sdk": "^2.515.0",
+    "aws-sdk": "^2.814.0",
     "cors": "^2.8.5",
     "navi": "^0.13.3",
     "node-sass": "^4.12.0",
