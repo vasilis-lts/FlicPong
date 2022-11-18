@@ -11,7 +11,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-navi": "^0.13.3",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-spring": "^8.0.27",
     "ws": "^7.2.0"
   },
